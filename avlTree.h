@@ -134,11 +134,25 @@ public:
         }
         else {
             if (compKey(data, current->getData()) < 0){
-                current->setLeft(insert(data, current->getLeft()));
+                if (current->getLeft() == nullptr){
+                    Node<T>* new_node = new Node<T>(data);
+                    current->setLeft(new_node);
+                    new_node->setFather(current);
+                }
+                else {
+                    insert(data, current->getLeft());
+                }
             }
             else {
                 if (compKey(data, current->getData()) > 0){
-                    current->setRight(insert(data, current->getRight()));
+                    if (current->getRight() == nullptr){
+                        Node<T>* new_node = new Node<T>(data);
+                        current->setRight(new_node);
+                        new_node->setFather(current);
+                    }
+                    else {
+                        insert(data, current->getRight());
+                    }
                 }
             }
         }
