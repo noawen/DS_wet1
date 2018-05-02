@@ -8,6 +8,14 @@
 #include <iostream>
 using std::cout;
 
+class TreeExceptions {
+};
+class FAILURE_TREE: public TreeExceptions {
+};
+class ALLOCATION_ERROR_TREE: public TreeExceptions {
+};
+
+
 template<class T>
 class Node {
     T data;
@@ -90,61 +98,84 @@ public:
         return this->left;
     }
 
-
-
 };
 
 template <class T, class compKey>
-class AvlTree{
-    Node<T>* root;
+class AvlTree {
+    Node<T> *root;
 
 public:
-    AvlTree(){
+    AvlTree() {
         this->root = nullptr;
     }
 
-    T& find (T data, Node<T>* current){
-        if (current == nullptr){
-            return nullptr;                         // maybe null is not good
-        }
-        else {
+    Node<T> *getRoot() {
+        return this->root;
+    }
+
+    void setRoot(Node<T> *new_root) {
+        if (new_root == nullptr)
+            return;
+        this->root = new_root;
+    }
+
+
+    T find(T data, Node<T> *current) {
+        if (current == nullptr) {
+            throw FAILURE_TREE();
+            //  return nullptr;                         // maybe null is not good
+        } else {
             compKey compare;
-            if (compare(data, current->getData()) == 0){
+            if (compare(data, current->getData()) == 0) {
                 return current->getData();
-            }
-            else {
-                if (compare(data, current->getData()) > 0){
-                   return find(data, current->getRight());
-                }
-                else {
+            } else {
+                if (compare(data, current->getData()) > 0) {
+                    return find(data, current->getRight());
+                } else {
                     return find(data, current->getLeft());
                 }
             }
 
-        //RETURN NOT FOUND
+
+            //RETURN NOT FOUND
         }
     }
 
-    Node<T>* insert (T data, Node<T>* current){
+    bool contain(T data){
+    try {
+         (this->find(data, this->getRoot()))  ;
+
+    }
+        catch (TreeExceptions&){
+            return false;
+        }
+        return true;
+    }
+
+
+
+    void insert (T data, Node<T>* current){
         //what about failure
         compKey compare;
         if (current == nullptr){
             Node<T>* new_node = new Node<T>(data);
-            current = new_node;
+            this->setRoot(new_node);
         }
         else {
-            if (compKey(data, current->getData()) < 0){
+            if (compare(data, current->getData()) < 0){
                 if (current->getLeft() == nullptr){
                     Node<T>* new_node = new Node<T>(data);
                     current->setLeft(new_node);
                     new_node->setFather(current);
+
+                    current->setHeight(current->getHeight()+1);
                 }
                 else {
                     insert(data, current->getLeft());
                 }
             }
             else {
-                if (compKey(data, current->getData()) > 0){
+                if (compare(data, current->getData()) > 0){
                     if (current->getRight() == nullptr){
                         Node<T>* new_node = new Node<T>(data);
                         current->setRight(new_node);
@@ -157,7 +188,22 @@ public:
             }
         }
     }
+
+
+    void printInOrder(Node<T> *node) {
+        if (node != NULL) {
+            if (node->getLeft() != NULL) {
+                printInOrder(node->getLeft());
+            }
+            cout << node->getData() << " ";
+            if (node->getRight() != NULL) {
+                printInOrder(node->getRight());
+            }
+        }
+    }
 };
+
+
 
 
 #endif //DSWET1_AVLTREE_H
