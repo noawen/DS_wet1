@@ -8,17 +8,15 @@
 #include <iostream>
 using std::cout;
 
-template<class T, class Key>
+template<class T>
 class Node {
     T data;
-    Key key;
     Node* father;
     Node* left, *right;
 
 public:
-    Node (const T& data, const Key& key){
+    Node (const T& data){
         this->data = data;
-        this->key = key;
         this->father = nullptr;
         this->right = nullptr;
         this->left = nullptr;
@@ -31,53 +29,47 @@ public:
         this->data = data;
     }
 
-    void setFather (const Node)<T, Key>* father){
+    void setFather (const Node<T>* father){
         if (this == nullptr){
             return;
         }
         this->father = father;
     }
 
-    void setRight (const Node)<T, Key>* right){
+    void setRight (const Node<T>* right){
         if (this == nullptr){
             return;
         }
-        this->father = right;
+        this->right = right;
     }
 
-    void setLeft (const Node)<T, Key>* left){
+    void setLeft (const Node<T>* left){
         if (this == nullptr){
             return;
         }
         this->left = left;
     }
 
-    Key& getKey (){
-        if (this == nullptr){
-            return;
-        }
-        return this->key;
-    }
 
     T& getData (){
         return this->data;
     }
 
-    Node<T, Key>* getFather() {
+    Node<T>* getFather() {
         if (this == nullptr) {
             return nullptr;
         }
         return this->father;
     }
 
-    Node<T, Key>* getRight() {
+    Node<T>* getRight() {
         if (this == nullptr) {
             return nullptr;
         }
         return this->right;
     }
 
-    Node<T, Key>* getLeft() {
+    Node<T>* getLeft() {
         if (this == nullptr) {
             return nullptr;
         }
@@ -88,30 +80,30 @@ public:
 
 };
 
-template <class T, class Key, class compKey>
+template <class T, class compKey>
 class AvlTree{
-    Node<T, Key>* root;
+    Node<T>* root;
 
 public:
     AvlTree(){
         this->root = nullptr;
     }
 
-    T& find (Key key, Node<T, Key>* current){
+    T& find (T key, Node<T>* current){
         if (current == nullptr){
             return nullptr;                         // maybe null is not good
         }
         else {
             compKey compare;
-            if (compare(key, current->getKey()) == 0){
+            if (compare(key, current->getData()) == 0){
                 return current->getData();
             }
             else {
-                if (compare(key, current->getKey()) > 0){
-                    find(key, current->getRight());
+                if (compare(key, current->getData()) > 0){
+                   return find(key, current->getRight());
                 }
                 else {
-                    find(key, current->getLeft());
+                    return find(key, current->getLeft());
                 }
             }
 
