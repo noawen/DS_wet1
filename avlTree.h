@@ -11,12 +11,14 @@ using std::cout;
 template<class T>
 class Node {
     T data;
+    int height;
     Node* father;
     Node* left, *right;
 
 public:
     Node (const T& data){
         this->data = data;
+        this->height = 0;
         this->father = nullptr;
         this->right = nullptr;
         this->left = nullptr;
@@ -29,21 +31,28 @@ public:
         this->data = data;
     }
 
-    void setFather (const Node<T>* father){
+    void setHeight (const int height){
+        if (this == nullptr){
+            return;
+        }
+        this->height = height;
+    }
+
+    void setFather (Node<T>* father){
         if (this == nullptr){
             return;
         }
         this->father = father;
     }
 
-    void setRight (const Node<T>* right){
+    void setRight (Node<T>* right){
         if (this == nullptr){
             return;
         }
         this->right = right;
     }
 
-    void setLeft (const Node<T>* left){
+    void setLeft (Node<T>* left){
         if (this == nullptr){
             return;
         }
@@ -54,6 +63,11 @@ public:
     T& getData (){
         return this->data;
     }
+
+    int getHeight (){
+        return this->height;
+    }
+
 
     Node<T>* getFather() {
         if (this == nullptr) {
@@ -89,25 +103,44 @@ public:
         this->root = nullptr;
     }
 
-    T& find (T key, Node<T>* current){
+    T& find (T data, Node<T>* current){
         if (current == nullptr){
             return nullptr;                         // maybe null is not good
         }
         else {
             compKey compare;
-            if (compare(key, current->getData()) == 0){
+            if (compare(data, current->getData()) == 0){
                 return current->getData();
             }
             else {
-                if (compare(key, current->getData()) > 0){
-                   return find(key, current->getRight());
+                if (compare(data, current->getData()) > 0){
+                   return find(data, current->getRight());
                 }
                 else {
-                    return find(key, current->getLeft());
+                    return find(data, current->getLeft());
                 }
             }
 
         //RETURN NOT FOUND
+        }
+    }
+
+    Node<T>* insert (T data, Node<T>* current){
+        //what about failure
+        compKey compare;
+        if (current == nullptr){
+            Node<T>* new_node = new Node<T>(data);
+            current = new_node;
+        }
+        else {
+            if (compKey(data, current->getData()) < 0){
+                current->setLeft(insert(data, current->getLeft()));
+            }
+            else {
+                if (compKey(data, current->getData()) > 0){
+                    current->setRight(insert(data, current->getRight()));
+                }
+            }
         }
     }
 };
