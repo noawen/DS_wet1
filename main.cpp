@@ -1,6 +1,6 @@
 #include <iostream>
 #include "avlTree.h"
-
+#include <cassert>
 using std::endl;
 
 
@@ -24,10 +24,12 @@ public:
 
 void test_insert_and_remove() {
     AvlTree<int, isBigger> avl = AvlTree<int, isBigger>();
-    int array[] = {8, 5, 3};
-    for (int i = 0; i < 3; i++) {
+    int array[] = {8, 5, 3, 9, 19};
+    for (int i = 0; i < 5; i++) {
         avl.insert(array[i], avl.getRoot());
     }
+
+    assert(avl.getRoot()->getHeight() == 2);
 
     if (avl.contain(30)){
         cout<<"OK";

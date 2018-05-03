@@ -152,6 +152,16 @@ public:
         return true;
     }
 
+    int max (Node<T>* left, Node<T>* right){
+        if (left == nullptr){
+            return right->getHeight();
+        }
+        if (right == nullptr){
+            return left->getHeight();
+        }
+        return left->getHeight() > right->getHeight() ? left->getHeight() : right->getHeight();
+    }
+
 
 
     void insert (T data, Node<T>* current){
@@ -167,11 +177,11 @@ public:
                     Node<T>* new_node = new Node<T>(data);
                     current->setLeft(new_node);
                     new_node->setFather(current);
-
                     current->setHeight(current->getHeight()+1);
                 }
                 else {
                     insert(data, current->getLeft());
+                    current->setHeight(max(current->getLeft(), current->getRight())+1);
                 }
             }
             else {
@@ -180,9 +190,11 @@ public:
                         Node<T>* new_node = new Node<T>(data);
                         current->setRight(new_node);
                         new_node->setFather(current);
+                        current->setHeight(current->getHeight()+1);
                     }
                     else {
                         insert(data, current->getRight());
+                        current->setHeight(max(current->getLeft(), current->getRight())+1);
                     }
                 }
             }
