@@ -100,7 +100,7 @@ public:
         if (a.getCoins() == b.getCoins()) {
             if (a.getId() < b.getId()) {
                 return 1;
-            } else {
+            } else if((a.getId() > b.getId())) {
                 return -1;
             }
         }

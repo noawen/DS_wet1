@@ -142,8 +142,6 @@ public:
         }
     }
 
-
-
     bool contain(T data){
     try {
          (this->find(data, this->getRoot()))  ;
@@ -183,6 +181,11 @@ public:
                 }
                 else {
                     insert(data, current->getLeft());
+
+                    //***//
+
+                    //***//
+
                     current->setHeight(max(current->getLeft(), current->getRight())+1);
                 }
             }
@@ -201,6 +204,35 @@ public:
                 }
             }
         }
+    }
+
+
+    /**need to check it**/
+    Node<T>* rrRotation (Node <T>* &node1){
+        if (!node1) {
+            return NULL;
+        }
+        Node<T>* node2 = node1->getLeft();
+        if (node2) {
+            node1->setLeft(node2->getRight());
+        }
+        else {
+            node1->setLeft(NULL);
+        }
+            node2->setRight(node1);
+            node1->setHeight(max(node1->getLeft(), node1->getRight())+1);
+            node2->setHeight(max(node2->getLeft(), node2->getRight())+1);
+        }
+
+
+
+
+
+    int balanceFactor(Node<T> *node) {
+        if (node == NULL) {
+            return 0;
+        }
+        return node->getLeft()->getHeight() - node->getRight()->getHeight();
     }
 
     void printInOrder(Node<T> *node) {

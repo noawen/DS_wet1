@@ -18,15 +18,25 @@ void test_insert_and_remove() {
     //AvlTree<Player, isBigger_byId> player_avl_id = AvlTree<Player, isBigger_byId>();
     AvlTree<Player, isBigger_byCoins_byId> player_avl_coins = AvlTree<Player, isBigger_byCoins_byId>();
 
-    Player p1 = Player(1,50);
-    Player p2 = Player(2,100);
-    Player p3 = Player(3,55);
-    Player p4 = Player(4,700);
+    Player p1 = Player(31,50);
+    Player p2 = Player(3122,100);
+    Player p3 = Player(31227,55);
+    Player p4 = Player(3122748,55);
+    Player p5 = Player(31227481,2);
+    Player p6 = Player(312274,55);
 
     player_avl_coins.insert(p1,player_avl_coins.getRoot());
+
     player_avl_coins.insert(p2,player_avl_coins.getRoot());
     player_avl_coins.insert(p3,player_avl_coins.getRoot());
     player_avl_coins.insert(p4,player_avl_coins.getRoot());
+    player_avl_coins.insert(p5,player_avl_coins.getRoot());
+    player_avl_coins.insert(p6,player_avl_coins.getRoot());
+
+
+    if(player_avl_coins.contain(p3)){
+        cout<<"OK"<<endl;
+    }
 
     player_avl_coins.printBackInOrder(player_avl_coins.getRoot());
     //player_avl_id.insert(p1,player_avl_id.getRoot());
