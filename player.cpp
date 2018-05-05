@@ -9,12 +9,12 @@ Player::Player(){
     this->coins = 0;
 
 }
-//Trainer::Trainer() : id(0) {};
 
 Player::Player(int id, int coins){
     this->id = id;
     this->coins = coins;
     this->player_clan = NULL;
+    this->num_of_challenges = 0;
 
 }
 
@@ -29,3 +29,41 @@ int Player::getCoins() {
         return 0;
     return this->coins;
 }
+
+int Player::getChallenges() {
+    if (!this)
+        return 0;
+    return this->num_of_challenges;
+}
+
+void Player::setCoins(int new_coins) {
+    if (!this)
+        return;
+    this->coins += new_coins;
+}
+
+void Player::plusChallenge() {
+    if (!this)
+        return;
+    this->num_of_challenges += 1;
+}
+
+void Player::setClan(Clan *clan) {
+    if (!this)
+        return;
+    this->player_clan = clan;
+}
+
+Clan* Player::getClan() {
+    if (!this)
+        return NULL;
+    return this->player_clan;
+}
+
+ std::ostream& operator << (std::ostream& os,  Player& player)
+{
+    os << "(" <<"id:"<<player.getId()<<" , " << "coins:"<<player.getCoins()<<")" << endl;
+    return os ;
+}
+
+

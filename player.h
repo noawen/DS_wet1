@@ -6,17 +6,20 @@
 #define DSWET1_PLAYER_H
 
 
-#include "iostream"
+#include <iostream>
+#include <ostream>
+using std::cout;
+using std::endl;
 
 class Clan;
 class isBigger;
-class isBigger_byCoins;
+class isBigger_byCoins_byID;
 class isBigger_byId;
 
 class Player {
     int id;
     int coins;
-   // int num_of_challenges;
+    int num_of_challenges;
     Clan *player_clan;
 
 public:
@@ -30,10 +33,19 @@ public:
 
     int getCoins();
 
-  //  int get_num_of_challenges();
+    int getChallenges();
+
+    void setCoins(int coins);
+
+    void plusChallenge();
+
+    void setClan (Clan *clan);
+
+     Clan* getClan() ;
+
+    friend std::ostream& operator << (std::ostream& os,  Player& player);
 
 };
-
 
 
 class isBigger {
@@ -50,7 +62,7 @@ public:
 };
 
 
-class isBigger_byId {
+class isBigger_byId_player {
 public:
     int operator()(Player& a, Player& b) {
         if (a.getId() < b.getId()) {
@@ -76,42 +88,31 @@ public:
     }
 };
 
-
-
-/*
+class isBigger_byCoins_byId {
 public:
-    Gladiator();
-
-    Gladiator(int id);
-
-    Gladiator(int level, int id);
-
-    Gladiator(const Gladiator& glad);
-
-    Gladiator(int level,int id,  Trainer* glad_trainer);
-
-    Gladiator&operator=(const Gladiator& glad);
-
-    int operator- (Gladiator& glad) const;
-
-    bool operator== (Gladiator& glad);
-
-    bool operator!= (Gladiator& glad);
-
-    void setLevel(int level);
-
-    void setId(int id);
-
-    void setTrainer(Trainer* trainer);
-
-    int getId();
-
-    int getLevel();
-
-    Trainer* getTrainer();
-
+    int operator()(Player &a, Player &b) {
+        if (a.getCoins() < b.getCoins()) {
+            return -1;
+        }
+        if (a.getCoins() > b.getCoins()) {
+            return 1;
+        }
+        if (a.getCoins() == b.getCoins()) {
+            if (a.getId() < b.getId()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+        return 0;
+    }
 };
-*/
+
+
+
+
+
+
 #endif //DSWET1_PLAYER_H
 
 

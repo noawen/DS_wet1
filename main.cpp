@@ -15,27 +15,26 @@ void test_insert_and_remove() {
         int_avl.insert(array[i], int_avl.getRoot());
 */
 
-    AvlTree<Player, isBigger_byId> player_avl_id = AvlTree<Player, isBigger_byId>();
-    AvlTree<Player, isBigger_byCoins> player_avl_coins = AvlTree<Player, isBigger_byCoins>();
+    //AvlTree<Player, isBigger_byId> player_avl_id = AvlTree<Player, isBigger_byId>();
+    AvlTree<Player, isBigger_byCoins_byId> player_avl_coins = AvlTree<Player, isBigger_byCoins_byId>();
 
-    Player p1 = Player(31,3);
-    Player p2 = Player(20,4);
-    Player p3 = Player(40,2);
+    Player p1 = Player(1,50);
+    Player p2 = Player(2,100);
+    Player p3 = Player(3,55);
+    Player p4 = Player(4,700);
 
     player_avl_coins.insert(p1,player_avl_coins.getRoot());
     player_avl_coins.insert(p2,player_avl_coins.getRoot());
     player_avl_coins.insert(p3,player_avl_coins.getRoot());
+    player_avl_coins.insert(p4,player_avl_coins.getRoot());
 
-
-    player_avl_id.insert(p1,player_avl_id.getRoot());
-    player_avl_id.insert(p2,player_avl_id.getRoot());
-    player_avl_id.insert(p3,player_avl_id.getRoot());
-
+    player_avl_coins.printBackInOrder(player_avl_coins.getRoot());
+    //player_avl_id.insert(p1,player_avl_id.getRoot());
+  //  player_avl_id.insert(p2,player_avl_id.getRoot());
+  //  player_avl_id.insert(p3,player_avl_id.getRoot());
     }
 
-
 /*
-
     assert(avl.getRoot()->getHeight() == 2);
 
     if (avl.contain(30)){
@@ -52,7 +51,6 @@ void test_insert_and_remove() {
 }
 
 */
-
 
 int main() {
      test_insert_and_remove();

@@ -132,19 +132,21 @@ public:
                 if (compare(data, current->getData()) > 0) {
                     return find(data, current->getRight());
                 } else {
-                    return find(data, current->getLeft());
+                    if (compare(data, current->getData()) < 0) {
+                        return find(data, current->getLeft());
+                    }
+                    throw FAILURE_TREE();
                 }
+                //RETURN NOT FOUND
             }
-
-
-            //RETURN NOT FOUND
         }
     }
+
+
 
     bool contain(T data){
     try {
          (this->find(data, this->getRoot()))  ;
-
     }
         catch (TreeExceptions&){
             return false;
@@ -201,7 +203,6 @@ public:
         }
     }
 
-
     void printInOrder(Node<T> *node) {
         if (node != NULL) {
             if (node->getLeft() != NULL) {
@@ -213,7 +214,20 @@ public:
             }
         }
     }
+
+    void printBackInOrder(Node<T> *node) {
+        if (node != NULL) {
+            if (node->getRight() != NULL) {
+                printBackInOrder(node->getRight());
+            }
+            cout << node->getData() << " ";
+            if (node->getLeft() != NULL) {
+                printBackInOrder(node->getLeft());
+            }
+        }
+    }
 };
+
 
 
 
