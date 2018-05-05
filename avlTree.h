@@ -73,6 +73,8 @@ public:
     }
 
     int getHeight (){
+        if(!this)
+            return 0;
         return this->height;
     }
 
@@ -181,12 +183,7 @@ public:
                 }
                 else {
                     insert(data, current->getLeft());
-
-                    //***//
-
-                    //***//
-
-                    current->setHeight(max(current->getLeft(), current->getRight())+1);
+                   current->setHeight(max(current->getLeft(), current->getRight())+1);
                 }
             }
             else {
@@ -206,8 +203,8 @@ public:
         }
     }
 
+/*
 
-    /**need to check it**/
     Node<T>* rrRotation (Node <T>* &node1){
         if (!node1) {
             return NULL;
@@ -222,7 +219,28 @@ public:
             node2->setRight(node1);
             node1->setHeight(max(node1->getLeft(), node1->getRight())+1);
             node2->setHeight(max(node2->getLeft(), node2->getRight())+1);
+        return node2;
         }
+
+    */
+
+/*
+    Node<T>* llRotation (Node <T>* &node1){
+        if (!node1) {
+            return NULL;
+        }
+        Node<T>* node2 = node1->getRight();
+        if (node2) {
+            node1->setRight(node2->getLeft());
+        }
+        else {
+            node1->setRight(NULL);
+        }
+        node2->setLeft(node1);
+        node1->setHeight(max(node1->getLeft(), node1->getRight())+1);
+        node2->setHeight(max(node2->getLeft(), node2->getRight())+1);
+        return node2;
+    }
 
 
 
@@ -234,6 +252,9 @@ public:
         }
         return node->getLeft()->getHeight() - node->getRight()->getHeight();
     }
+
+*/
+
 
     void printInOrder(Node<T> *node) {
         if (node != NULL) {
