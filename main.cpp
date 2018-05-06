@@ -22,7 +22,7 @@ void test_insert() {
     int_avl.printInOrder(int_avl.getRoot());
     //AvlTree<Player, isBigger_byId> player_avl_id = AvlTree<Player, isBigger_byId>();
     */
-
+/*
     AvlTree<Player, isBigger_byCoins_byId> player_avl_coins = AvlTree<Player, isBigger_byCoins_byId>();
     Player p1 = Player(31,50);
     Player p2 = Player(3122,100);
@@ -54,7 +54,7 @@ void test_insert() {
   //  player_avl_id.insert(p3,player_avl_id.getRoot());
     }
 
-/*
+
     assert(avl.getRoot()->getHeight() == 2);
 
     if (avl.contain(30)){
@@ -71,7 +71,7 @@ void test_insert() {
 }
 
 */
-/*
+}
 void test_oasis() {
     Oasis oasis = Oasis();
     oasis.addPlayer(312,10);
@@ -81,10 +81,10 @@ void test_oasis() {
     oasis.joinClan(3123,207);
     oasis.joinClan(3122,207);
 }
- */
+
 int main() {
-     test_insert();
-   // test_oasis();
+    test_insert();
+    test_oasis();
 
     return 0;
 }
