@@ -31,6 +31,10 @@ public:
 
     int getBestPlayerChallenges();
 
+    int getNumOfPlayers();
+
+    void setNumOfPlayers();
+
     void setBestPlayer(int id);
 
     void setBestPlayerChallenges(int challenges);

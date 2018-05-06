@@ -51,6 +51,19 @@ void Clan::setBestPlayerChallenges(int challenges){
     this->best_player_challenges = challenges;
 }
 
+void Clan::setNumOfPlayers() {
+    if (!this)
+        return;
+    this->num_of_players += 1;
+}
+
+int Clan::getNumOfPlayers() {
+    if (!this){
+        return 0;
+    }
+    return this->num_of_players;
+}
+
 AvlTree<Player,isBigger_byCoins_byId>*Clan ::getPalyersTree(){
         if (!this)
             return NULL;

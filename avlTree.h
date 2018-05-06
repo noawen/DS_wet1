@@ -122,7 +122,7 @@ public:
     }
 
 
-    T find(T data, Node<T> *current) {
+    T& find(T data, Node<T> *current) {
         if (current == nullptr) {
             throw FAILURE_TREE();
             //  return nullptr;                         // maybe null is not good
@@ -202,6 +202,49 @@ public:
             }
         }
     }
+
+
+
+      Node<T>* remove(T data,  Node<T>* current)
+    {
+        compKey compare;
+        Node<T>* temp;
+        if(current == NULL)
+            return NULL;
+        else if(compare(data , current->getData()) < 0)
+            current->setLeft(remove(data, current->getLeft())) ;
+        else if(compare(data , current->getData()) > 0)
+            current->setRight(remove(data, current->getRight())) ;
+        else if(current->getLeft() && current->getRight())
+        {
+            temp = findMin(current->getRight());
+            current->setData(temp->getData());
+            current->setRight(remove(current->getData(),current->getRight()));
+                    }
+        else
+        {
+            temp = current;
+            if(current->getLeft() == NULL)
+                current = current->getRight();
+            else if(current->getRight() == NULL)
+                current = current->getLeft();
+            delete temp;
+        }
+        return current;
+    }
+
+    Node<T>* findMin(Node<T>* current)
+    {
+        if(current == NULL)
+            return NULL;
+        else if(current->getLeft() == NULL)
+            return current;
+        else
+            return findMin(current->getLeft());
+    }
+
+
+
 
 /*
 

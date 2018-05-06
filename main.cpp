@@ -9,16 +9,20 @@ using std::endl;
 
 
 void test_insert() {
-    /*
+/*
     AvlTree<int, isBigger> int_avl = AvlTree<int, isBigger>();
     int array[] = {8,7,6};
     for (int i = 0; i < 3; i++) {
         int_avl.insert(array[i], int_avl.getRoot());
     }
-     */
-    //int_avl.printInOrder(int_avl.getRoot());
+
+    int_avl.printInOrder(int_avl.getRoot());
+    cout<<endl;
+    int_avl.remove(7,int_avl.getRoot());
+    int_avl.printInOrder(int_avl.getRoot());
     //AvlTree<Player, isBigger_byId> player_avl_id = AvlTree<Player, isBigger_byId>();
-/*
+    */
+
     AvlTree<Player, isBigger_byCoins_byId> player_avl_coins = AvlTree<Player, isBigger_byCoins_byId>();
     Player p1 = Player(31,50);
     Player p2 = Player(3122,100);
@@ -36,12 +40,15 @@ void test_insert() {
     player_avl_coins.insert(p6,player_avl_coins.getRoot());
 
 
-    if(player_avl_coins.contain(p3)){
-        cout<<"OK"<<endl;
-    }
-*/
+   // if(player_avl_coins.contain(p3)){
+      //  cout<<"OK"<<endl;
+    //}
 
-  //  player_avl_coins.printBackInOrder(player_avl_coins.getRoot());
+
+    player_avl_coins.printBackInOrder(player_avl_coins.getRoot());
+    cout<<endl;
+    player_avl_coins.remove(p3,player_avl_coins.getRoot());
+    player_avl_coins.printBackInOrder(player_avl_coins.getRoot());
     //player_avl_id.insert(p1,player_avl_id.getRoot());
   //  player_avl_id.insert(p2,player_avl_id.getRoot());
   //  player_avl_id.insert(p3,player_avl_id.getRoot());
@@ -64,17 +71,20 @@ void test_insert() {
 }
 
 */
+/*
 void test_oasis() {
     Oasis oasis = Oasis();
     oasis.addPlayer(312,10);
     oasis.addPlayer(3122,5);
     oasis.addPlayer(3123,5);
     oasis.addClan(207);
+    oasis.joinClan(3123,207);
+    oasis.joinClan(3122,207);
 }
+ */
 int main() {
-   //  test_insert();
-    test_oasis();
-   // Addtrainer_test();
-    //buyGladiator_test();
+     test_insert();
+   // test_oasis();
+
     return 0;
 }
