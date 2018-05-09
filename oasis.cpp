@@ -144,8 +144,8 @@ void Oasis::completeChallange(int playerID, int coins) {
     this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->remove(to_find);
     this->all_players_by_coins.remove(to_find);
 
-   // Player p1 = Player(312274814,1);
-    //this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->insert(p1);
+    Player p1 = Player(312274814,1);
+    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->getRoot()->setData(p1);
 
     to_find.setCoins(new_coins);
     this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->insert(to_find);
