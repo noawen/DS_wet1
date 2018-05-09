@@ -461,11 +461,13 @@ void printPenguin(char c){
 
 }
 
+
 int main() {
     void* oasis = init();
     if (oasis == NULL) {
         printf("init failed.\n");
     };
+
     int the_challenger=0,size=-1,*score_board= nullptr;
     checkBadInputs(oasis,the_challenger,size,score_board);
     checkAddPlayer(oasis,the_challenger,size,score_board);
@@ -476,9 +478,11 @@ int main() {
     checkGetScoreboardFirst(oasis,size,score_board);
   //  checkUniteClans(oasis,size,score_board,the_challenger);
   //  quit(&oasis);
-    assert(oasis==NULL);
-    std::cout<<"all good, take a penguin:"<<std::endl;
-    printPenguin('@');
+   // assert(oasis==NULL);
+
+
+
+
     return 0;
 }
 

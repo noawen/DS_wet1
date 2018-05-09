@@ -4,7 +4,7 @@
 
 #ifndef DSWET1_AVLTREE_H
 #define DSWET1_AVLTREE_H
-
+#define nullptr 0
 #include <iostream>
 using std::cout;
 
@@ -20,6 +20,7 @@ template<class T>
 class Node {
     T data;
     int height;
+    int balanceFactor;
     Node* father;
     Node* left, *right;
 
@@ -27,41 +28,49 @@ public:
     Node (const T& data){
         this->data = data;
         this->height = 0;
-        this->father = NULL;
-        this->right = NULL;
-        this->left = NULL;
+        this->balanceFactor = 0;
+        this->father = nullptr;
+        this->right = nullptr;
+        this->left = nullptr;
     }
 
     void setData (const T& data){
-        if (this == NULL){
+        if (this == nullptr){
             return;
         }
         this->data = data;
     }
 
     void setHeight (const int height){
-        if (this == NULL){
+        if (this == nullptr){
             return;
         }
         this->height = height;
     }
 
+    void setBalanceFactor (const int balanceFactor){
+        if (this == nullptr){
+            return;
+        }
+        this->balanceFactor = balanceFactor;
+    }
+
     void setFather (Node<T>* father){
-        if (this == NULL){
+        if (this == nullptr){
             return;
         }
         this->father = father;
     }
 
     void setRight (Node<T>* right){
-        if (this == NULL){
+        if (this == nullptr){
             return;
         }
         this->right = right;
     }
 
     void setLeft (Node<T>* left){
-        if (this == NULL){
+        if (this == nullptr){
             return;
         }
         this->left = left;
@@ -72,6 +81,10 @@ public:
         return this->data;
     }
 
+    int getBalanceFactor (){
+        return this->balanceFactor;
+    }
+
     int getHeight (){
         if(!this)
             return 0;
@@ -80,22 +93,22 @@ public:
 
 
     Node<T>* getFather() {
-        if (this == NULL) {
-            return NULL;
+        if (this == nullptr) {
+            return nullptr;
         }
         return this->father;
     }
 
     Node<T>* getRight() {
-        if (this == NULL) {
-            return NULL;
+        if (this == nullptr) {
+            return nullptr;
         }
         return this->right;
     }
 
     Node<T>* getLeft() {
-        if (this == NULL) {
-            return NULL;
+        if (this == nullptr) {
+            return nullptr;
         }
         return this->left;
     }
@@ -106,9 +119,42 @@ template <class T, class compKey>
 class AvlTree {
     Node<T> *root;
 
+    Node<T> *insert(T &data, Node<T> *current) {
+        compKey compare;
+        if (current == nullptr) {
+            try {
+                current = new Node<T>(data);
+            } catch (std::bad_alloc &) {
+                throw ALLOCATION_ERROR_TREE();
+            }
+        } else if (compare(data, current->getData()) < 0) {
+            current->setLeft(insert(data, current->getLeft()));
+            if (balanceFactor(current) == 2) {
+                if (balanceFactor(current->getLeft()) >= 0) {
+                    current = LL(current);
+                } else if (balanceFactor(current->getLeft()) == -1) {
+                    current = LR(current);
+                }
+            }
+        } else if (compare(data, current->getData()) > 0) {
+            current->setRight(insert(data, current->getRight()));
+            if (balanceFactor(current) == -2) {
+                if (balanceFactor(current->getRight()) <= 0) {
+                    current = RR(current);
+                } else if (balanceFactor(current->getRight()) == 1) {
+                    current = RL(current);
+                }
+            }
+        } else {
+            throw FAILURE_TREE();
+        }
+        current->setHeight(max(current->getLeft(), current->getRight()) + 1);
+        return current;
+    }
+
 public:
     AvlTree() {
-        this->root = NULL;
+        this->root = nullptr;
     }
 
     Node<T> *getRoot() {
@@ -116,17 +162,15 @@ public:
     }
 
     void setRoot(Node<T> *new_root) {
-        if (new_root == NULL)
+        if (new_root == nullptr)
             return;
         this->root = new_root;
     }
 
 
-    T& find( T data, Node<T> *current) {
-        if (current == NULL) {
+    T &find(T data, Node<T> *current) {
+        if (current == nullptr) {
             throw FAILURE_TREE();
-           //   return 0;                         // maybe null is not good
-
         } else {
             compKey compare;
             if (compare(data, current->getData()) == 0) {
@@ -140,99 +184,158 @@ public:
                     }
                     throw FAILURE_TREE();
                 }
-                //RETURN NOT FOUND
             }
         }
     }
 
-    bool contain(T data){
-    try {
-         (this->find(data, this->getRoot()))  ;
-    }
-        catch (TreeExceptions&){
+    bool contain(T data) {
+        try {
+            (this->find(data, this->getRoot()));
+        }
+        catch (TreeExceptions &) {
             return false;
         }
         return true;
     }
 
-    int max (Node<T>* left, Node<T>* right){
-        if (left == NULL){
+    int max(Node<T> *left, Node<T> *right) {
+        if (left == nullptr && right == nullptr) {
+            return -1;
+        } else if (left == nullptr) {
             return right->getHeight();
-        }
-        if (right == NULL){
+        } else if (right == nullptr) {
             return left->getHeight();
         }
         return left->getHeight() > right->getHeight() ? left->getHeight() : right->getHeight();
     }
 
 
-
-    void insert (T data, Node<T>* current){
-        //what about failure
-        compKey compare;
-        if (current == NULL){
-            Node<T>* new_node = new Node<T>(data);
-            this->setRoot(new_node);
-        }
-        else {
-            if (compare(data, current->getData()) < 0){
-                if (current->getLeft() == NULL){
-                    Node<T>* new_node = new Node<T>(data);
-                    current->setLeft(new_node);
-                    new_node->setFather(current);
-                    current->setHeight(current->getHeight()+1);
-                }
-                else {
-                    insert(data, current->getLeft());
-                   current->setHeight(max(current->getLeft(), current->getRight())+1);
-                }
-            }
-            else {
-                if (compare(data, current->getData()) > 0){
-                    if (current->getRight() == NULL){
-                        Node<T>* new_node = new Node<T>(data);
-                        current->setRight(new_node);
-                        new_node->setFather(current);
-                        current->setHeight(current->getHeight()+1);
-                    }
-                    else {
-                        insert(data, current->getRight());
-                        current->setHeight(max(current->getLeft(), current->getRight())+1);
-                    }
+    int balanceFactor(Node<T> *current) {
+        if (current->getRight() == nullptr && current->getLeft() == nullptr) {
+            current->setBalanceFactor(0);
+            return 0;
+        } else {
+            if (current->getRight() == nullptr) {
+                current->setBalanceFactor(current->getLeft()->getHeight() + 1);
+                return (current->getLeft()->getHeight() + 1);
+            } else {
+                if (current->getLeft() == nullptr) {
+                    current->setBalanceFactor(-(current->getRight()->getHeight()) - 1);
+                    return (-(current->getRight()->getHeight()) - 1);
                 }
             }
         }
+        current->setBalanceFactor(current->getLeft()->getHeight() - current->getRight()->getHeight());
+        return (current->getLeft()->getHeight() - current->getRight()->getHeight());
     }
 
 
+    Node<T> *LL(Node<T> *current) {
+        if (current == nullptr) {
+            return nullptr;
+        }
+        Node<T> *left = current->getLeft();
+        Node<T> *leftR = left->getRight();
+        if (leftR != nullptr) {
+            current->setLeft(leftR);
+        } else {
+            current->setLeft(nullptr);
+        }
+        left->setRight(current);
+        current->setHeight(max(current->getLeft(), current->getRight()) + 1);
+        left->setHeight(max(left->getLeft(), left->getRight()) + 1);
+        return left;
+    }
 
-      Node<T>* remove(T data,  Node<T>* current)
-    {
+
+    Node<T> *RR(Node<T> *current) {
+        if (current == nullptr) {
+            return nullptr;
+        }
+        Node<T> *right = current->getRight();
+        Node<T> *rightL = right->getLeft();
+        if (rightL != nullptr) {
+            current->setRight(rightL);
+        } else {
+            current->setRight(nullptr);
+        }
+        right->setLeft(current);
+        current->setHeight(max(current->getLeft(), current->getRight()) + 1);
+        right->setHeight(max(right->getLeft(), right->getRight()) + 1);
+        return right;
+    }
+
+    Node<T> *LR(Node<T> *current) {
+        current->setLeft(RR(current->getLeft()));
+        return LL(current);
+    }
+
+    Node<T> *RL(Node<T> *current) {
+        current->setRight(LL(current->getRight()));
+        return RR(current);
+    }
+
+
+    void insert(T &data) {
+        root = insert(data, root);
+    }
+
+
+    void deleteNode(T &data) {
+        root = remove(data, root);
+    }
+
+
+    Node<T> *remove(T data, Node<T> *current) {
         compKey compare;
-        Node<T>* temp;
-        if(current == NULL)
-            return NULL;
-        else if(compare(data , current->getData()) < 0)
-            current->setLeft(remove(data, current->getLeft())) ;
-        else if(compare(data , current->getData()) > 0)
-            current->setRight(remove(data, current->getRight())) ;
-        else if(current->getLeft() && current->getRight())
-        {
-            temp = findMin(current->getRight());
-            current->setData(temp->getData());
-            current->setRight(remove(current->getData(),current->getRight()));
+       // Node<T> *temp;
+        if (current == nullptr) {
+            return current;
+        }
+        if (compare(data, current->getData()) < 0) {
+            current->setLeft(remove(data, current->getLeft()));
+        } else if (compare(data, current->getData()) > 0) {
+            current->setRight(remove(data, current->getRight()));
+        } else {                                                       //if we find and doesn't have 2 children
+            Node<T> *left = current->getLeft();
+            Node<T> *right = current->getRight();
+            if (right == nullptr || left == nullptr) {
+                Node<T> *tmp = (left != nullptr) ? left : right;     //tmp to be the only child
+                if (tmp == nullptr) {                                // has no child
+                    tmp = current;
+                    current = nullptr;
+                } else {                                     // has one child
+                    current->setData(tmp->getData());
+                    if (left == nullptr){
+                        current->setRight(nullptr);
                     }
-        else
-        {
-            temp = current;
-            if(current->getLeft() == NULL)
-                current = current->getRight();
-            else if(current->getRight() == NULL)
-                current = current->getLeft();
-            delete temp;
+                    else{
+                        current->setLeft(nullptr);
+                    }
+                }
+                delete (tmp);
+            } else {                                         // has two children
+                Node<T> *min = findMin(current->getRight());
+                current->setData(min->getData());
+                current->setRight(remove(min->getData(), current->getRight()));
+            }
+        }
+        current->setHeight(max(current->getLeft(), current->getRight())+1);
+        if (balanceFactor(current) == 2 && balanceFactor(current->getLeft()) >= 0){
+            return LL(current);
+        }
+        if (balanceFactor(current) == 2 && balanceFactor(current->getLeft()) == -1){
+            return LR(current);
+        }
+        if (balanceFactor(current) == -2 && balanceFactor(current->getRight()) <= 0){
+            return RR(current);
+        }
+        if (balanceFactor(current) == -2 && balanceFactor(current->getRight()) == 1){
+            return RL(current);
         }
         return current;
     }
+
 
     Node<T>* findMin(Node<T>* current)
     {
@@ -244,61 +347,21 @@ public:
             return findMin(current->getLeft());
     }
 
-
-
-
-/*
-
-    Node<T>* rrRotation (Node <T>* &node1){
-        if (!node1) {
-            return NULL;
-        }
-        Node<T>* node2 = node1->getLeft();
-        if (node2) {
-            node1->setLeft(node2->getRight());
-        }
-        else {
-            node1->setLeft(NULL);
-        }
-            node2->setRight(node1);
-            node1->setHeight(max(node1->getLeft(), node1->getRight())+1);
-            node2->setHeight(max(node2->getLeft(), node2->getRight())+1);
-        return node2;
-        }
-
-    */
-
-/*
-    Node<T>* llRotation (Node <T>* &node1){
-        if (!node1) {
-            return NULL;
-        }
-        Node<T>* node2 = node1->getRight();
-        if (node2) {
-            node1->setRight(node2->getLeft());
-        }
-        else {
-            node1->setRight(NULL);
-        }
-        node2->setLeft(node1);
-        node1->setHeight(max(node1->getLeft(), node1->getRight())+1);
-        node2->setHeight(max(node2->getLeft(), node2->getRight())+1);
-        return node2;
-    }
-
-
-
-
-
-    int balanceFactor(Node<T> *node) {
+    int returnBackInOrder(Node<T> *node, T* arr, int i) {
         if (node == NULL) {
-            return 0;
+            return i;
         }
-        return node->getLeft()->getHeight() - node->getRight()->getHeight();
+        if (node->getRight() != NULL) {
+            i = returnBackInOrder(node->getRight(), arr, i);
+        }
+        arr[i] = node->getData();
+        cout<<arr[i]<<" , ";
+        i++;
+        if (node->getLeft() != NULL) {
+            i = returnBackInOrder(node->getLeft(), arr, i);
+        }
+        return i;
     }
-
-*/
-
 
     void printInOrder(Node<T> *node) {
         if (node != NULL) {
@@ -323,38 +386,6 @@ public:
             }
         }
     }
-
-    int returnBackInOrder(Node<T> *node, T* arr, int i) {
-        if (node == NULL) {
-            return i;
-        }
-        if (node->getRight() != NULL) {
-            i = returnBackInOrder(node->getRight(), arr, i);
-        }
-        arr[i] = node->getData();
-        cout<<arr[i]<<" , ";
-        i++;
-        if (node->getLeft() != NULL) {
-            i = returnBackInOrder(node->getLeft(), arr, i);
-        }
-        return i;
-    }
-
-    void removeTree(Node<T>* current) {
-        // Removes all the nodes under a given node
-        //Delete del;
-        if (!current) {
-            return;
-        }
-        removeTree(current->getLeft());
-        removeTree(current->getRight());
-        //delete (current->getData());
-        delete current;
-
-    }
-        ~AvlTree(){
-            removeTree(this->getRoot());
-        }
 };
 
 

@@ -32,8 +32,8 @@ void Oasis::addPlayer(int playerID, int initialCoins) {
     if (this->all_players_by_id.contain(new_player)){
         throw FAILURE_OASIS();
     }
-    this->all_players_by_id.insert(new_player,all_players_by_id.getRoot());
-    this->all_players_by_coins.insert(new_player,all_players_by_coins.getRoot());
+    this->all_players_by_id.insert(new_player);
+    this->all_players_by_coins.insert(new_player);
     this->tot_num_of_players++;
 }
 
@@ -45,7 +45,7 @@ void Oasis::addClan( int clanID) {
     if (this->all_clans.contain(new_clan)) {
         throw FAILURE_OASIS();
     }
-    this->all_clans.insert(new_clan,this->all_clans.getRoot());
+    this->all_clans.insert(new_clan);
 }
 
 void Oasis::joinClan(int playerID, int clanID) {
@@ -80,7 +80,7 @@ void Oasis::joinClan(int playerID, int clanID) {
             this->all_clans.find(found_clan, this->all_clans.getRoot()).setBestPlayer(found_player.getId());
         }
     }
-    this->all_clans.find(found_clan,this->all_clans.getRoot()).getPalyersTree()->insert(found_player,this->all_clans.find(found_clan,this->all_clans.getRoot()).getPalyersTree()->getRoot());
+    this->all_clans.find(found_clan,this->all_clans.getRoot()).getPalyersTree()->insert(found_player);
     this->all_clans.find(found_clan,this->all_clans.getRoot()).setNumOfPlayers();
 }
 
@@ -125,8 +125,8 @@ void Oasis::completeChallange(int playerID, int coins) {
     this->all_players_by_coins.remove(to_find,this->all_players_by_coins.getRoot());
     this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->remove(to_find,this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->getRoot());
     to_find.setCoins(new_coins);
-    this->all_players_by_coins.insert(to_find,this->all_players_by_coins.getRoot());
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->insert(to_find,this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->getRoot());
+    this->all_players_by_coins.insert(to_find);
+    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->insert(to_find);
 
 }
 
