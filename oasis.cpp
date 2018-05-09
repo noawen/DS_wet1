@@ -20,22 +20,40 @@ Oasis::Oasis(){
 }
 
 void Oasis::addPlayer(int playerID, int initialCoins) {
-    if (playerID <= 0 || initialCoins < 0){
+    Player to_find = Player(playerID,0);
+    if (playerID <= 0 || initialCoins < 0) {
         throw INVALID_INPUT_OASIS();
     }
-   // try {
-        Player new_player = Player(playerID, initialCoins);
+    // try {
+    Player new_player = Player(playerID, initialCoins);
     //}
-   // catch (std::bad_alloc&&){
-   //     throw ALLOCATION_ERROR_OASIS();
-   // }
-    if (this->all_players_by_id.contain(new_player)){
+    // catch (std::bad_alloc&&){
+    //     throw ALLOCATION_ERROR_OASIS();
+    // }
+    if (this->all_players_by_id.contain(new_player)) {
         throw FAILURE_OASIS();
     }
     this->all_players_by_id.insert(new_player);
     this->all_players_by_coins.insert(new_player);
     this->tot_num_of_players++;
+    if (this->tot_num_of_players == 1) {
+        this->best_player_id = playerID;
+        this->best_player_challenges = 0;
+    }
+    int curr_chgs = this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getChallenges();
+
+    if (this->best_player_challenges < curr_chgs) {
+        this->best_player_challenges = curr_chgs;
+        this->best_player_id = playerID;
+    }
+    if (this->best_player_challenges == curr_chgs) {
+        if (playerID < this->best_player_id) {
+            this->best_player_id = playerID;
+            this->best_player_challenges = curr_chgs;
+        }
+    }
 }
+
 
 void Oasis::addClan( int clanID) {
     if (clanID <= 0) {
@@ -60,7 +78,7 @@ void Oasis::joinClan(int playerID, int clanID) {
         throw FAILURE_OASIS();
     }
     Player found_player = this->all_players_by_id.find(player_to_find,this->all_players_by_id.getRoot());
-    if (player_to_find.getClan() != NULL){
+    if (found_player.getClan() != NULL){
         throw FAILURE_OASIS();
     }
     Clan found_clan = this->all_clans.find(clan_to_find,this->all_clans.getRoot());
@@ -121,18 +139,26 @@ void Oasis::completeChallange(int playerID, int coins) {
         }
     }
 
+
     to_find.setCoins(old_coins);
-    this->all_players_by_coins.remove(to_find,this->all_players_by_coins.getRoot());
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->remove(to_find,this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->getRoot());
+    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->remove(to_find);
+    this->all_players_by_coins.remove(to_find);
+
+   // Player p1 = Player(312274814,1);
+    //this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->insert(p1);
+
     to_find.setCoins(new_coins);
-    this->all_players_by_coins.insert(to_find);
     this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->insert(to_find);
+    this->all_players_by_coins.insert(to_find);
+
 
 }
 
 
 void Oasis::getBestPlayer(int clanID, int *playerID) {
-
+    if (clanID == 0 || playerID == NULL){
+        throw INVALID_INPUT_OASIS();
+    }
     if (clanID < 0) {
         if (this->tot_num_of_players != 0) {
             *playerID = this->best_player_id;
@@ -155,7 +181,7 @@ void Oasis::getBestPlayer(int clanID, int *playerID) {
 
 void Oasis::getScoreboard(int clanID, int **players, int *numOfPlayers) {
     //bool trainerFound = false;
-    if (clanID == 0 || *players == NULL || numOfPlayers == NULL) {
+    if (clanID == 0 || players == NULL || numOfPlayers == NULL) {
         throw INVALID_INPUT_OASIS();
     }
     if (clanID < 0) {
@@ -182,6 +208,7 @@ void Oasis::uniteClans(int clanID1, int clanID2){
     if (!this->all_clans.contain(clan1) || !(this->all_clans.contain(clan2))){
         throw FAILURE_OASIS();
     }
+
 }
 
 
@@ -200,6 +227,7 @@ void Oasis:: getScoreAux(AvlTree<Player,isBigger_byCoins_byID> *tree, int **play
         free(players_tot);
     }
 }
+
 
 int Oasis::checkAccess (int id){
     Player to_find = Player (id , 0);

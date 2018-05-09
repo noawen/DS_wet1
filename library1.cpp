@@ -18,9 +18,13 @@ void* init(){
 }
 
 StatusType addPlayer(void *DS, int playerID, int initialCoins){
+    if (DS == NULL){
+        return INVALID_INPUT;
+    }
     try{
         ((Oasis*)DS)->addPlayer(playerID,initialCoins);
     }
+
     catch(INVALID_INPUT_OASIS&){
         return INVALID_INPUT;
     }
@@ -34,6 +38,9 @@ StatusType addPlayer(void *DS, int playerID, int initialCoins){
 }
 
 StatusType addClan(void *DS, int clanID){
+    if (DS == NULL){
+        return INVALID_INPUT;
+    }
     try{
         ((Oasis*)DS)->addClan(clanID);
     }
@@ -51,6 +58,9 @@ StatusType addClan(void *DS, int clanID){
 
 
 StatusType joinClan(void *DS, int playerID, int clanID){
+    if (DS == NULL){
+        return INVALID_INPUT;
+    }
     try{
         ((Oasis*)DS)->joinClan(playerID,clanID);
     }
@@ -68,6 +78,9 @@ StatusType joinClan(void *DS, int playerID, int clanID){
 }
 
 StatusType completeChallange(void *DS, int playerID, int coins){
+    if (DS == NULL){
+        return INVALID_INPUT;
+    }
     try{
         ((Oasis*)DS)->completeChallange(playerID,coins);
     }
@@ -85,6 +98,9 @@ StatusType completeChallange(void *DS, int playerID, int coins){
 }
 
 StatusType getBestPlayer(void *DS, int clanID, int* playerID){
+    if (DS == NULL){
+        return INVALID_INPUT;
+    }
     try{
         ((Oasis*)DS)->getBestPlayer(clanID,playerID);
     }
@@ -100,6 +116,9 @@ StatusType getBestPlayer(void *DS, int clanID, int* playerID){
 }
 
 StatusType getScoreboard(void *DS, int clanID, int** players, int* numOfPlayers){
+    if (DS == NULL){
+        return INVALID_INPUT;
+    }
     try{
         ((Oasis*)DS)->getScoreboard(clanID,players,numOfPlayers);
     }

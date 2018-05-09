@@ -158,6 +158,9 @@ public:
     }
 
     Node<T> *getRoot() {
+        if (!this){
+            return NULL;
+        }
         return this->root;
     }
 
@@ -281,7 +284,9 @@ public:
     }
 
 
-    void deleteNode(T &data) {
+    void remove(T &data) {
+        if (!this)
+            return;
         root = remove(data, root);
     }
 
@@ -320,6 +325,9 @@ public:
                 current->setRight(remove(min->getData(), current->getRight()));
             }
         }
+        if (current == nullptr){
+            return current;
+        }
         current->setHeight(max(current->getLeft(), current->getRight())+1);
         if (balanceFactor(current) == 2 && balanceFactor(current->getLeft()) >= 0){
             return LL(current);
@@ -355,7 +363,7 @@ public:
             i = returnBackInOrder(node->getRight(), arr, i);
         }
         arr[i] = node->getData();
-        cout<<arr[i]<<" , ";
+    //    cout<<arr[i]<<" , ";
         i++;
         if (node->getLeft() != NULL) {
             i = returnBackInOrder(node->getLeft(), arr, i);

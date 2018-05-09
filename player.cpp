@@ -7,7 +7,6 @@
 Player::Player(){
     this->id = 0;
     this->coins = 0;
-
 }
 
 Player::Player(int id, int coins){
@@ -15,7 +14,6 @@ Player::Player(int id, int coins){
     this->coins = coins;
     this->player_clan = NULL;
     this->num_of_challenges = 0;
-
 }
 
 int Player::getId() {
