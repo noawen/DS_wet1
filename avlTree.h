@@ -27,41 +27,41 @@ public:
     Node (const T& data){
         this->data = data;
         this->height = 0;
-        this->father = nullptr;
-        this->right = nullptr;
-        this->left = nullptr;
+        this->father = NULL;
+        this->right = NULL;
+        this->left = NULL;
     }
 
     void setData (const T& data){
-        if (this == nullptr){
+        if (this == NULL){
             return;
         }
         this->data = data;
     }
 
     void setHeight (const int height){
-        if (this == nullptr){
+        if (this == NULL){
             return;
         }
         this->height = height;
     }
 
     void setFather (Node<T>* father){
-        if (this == nullptr){
+        if (this == NULL){
             return;
         }
         this->father = father;
     }
 
     void setRight (Node<T>* right){
-        if (this == nullptr){
+        if (this == NULL){
             return;
         }
         this->right = right;
     }
 
     void setLeft (Node<T>* left){
-        if (this == nullptr){
+        if (this == NULL){
             return;
         }
         this->left = left;
@@ -80,22 +80,22 @@ public:
 
 
     Node<T>* getFather() {
-        if (this == nullptr) {
-            return nullptr;
+        if (this == NULL) {
+            return NULL;
         }
         return this->father;
     }
 
     Node<T>* getRight() {
-        if (this == nullptr) {
-            return nullptr;
+        if (this == NULL) {
+            return NULL;
         }
         return this->right;
     }
 
     Node<T>* getLeft() {
-        if (this == nullptr) {
-            return nullptr;
+        if (this == NULL) {
+            return NULL;
         }
         return this->left;
     }
@@ -108,7 +108,7 @@ class AvlTree {
 
 public:
     AvlTree() {
-        this->root = nullptr;
+        this->root = NULL;
     }
 
     Node<T> *getRoot() {
@@ -116,16 +116,17 @@ public:
     }
 
     void setRoot(Node<T> *new_root) {
-        if (new_root == nullptr)
+        if (new_root == NULL)
             return;
         this->root = new_root;
     }
 
 
-    T& find(T data, Node<T> *current) {
-        if (current == nullptr) {
+    T& find( T data, Node<T> *current) {
+        if (current == NULL) {
             throw FAILURE_TREE();
-            //  return nullptr;                         // maybe null is not good
+           //   return 0;                         // maybe null is not good
+
         } else {
             compKey compare;
             if (compare(data, current->getData()) == 0) {
@@ -155,10 +156,10 @@ public:
     }
 
     int max (Node<T>* left, Node<T>* right){
-        if (left == nullptr){
+        if (left == NULL){
             return right->getHeight();
         }
-        if (right == nullptr){
+        if (right == NULL){
             return left->getHeight();
         }
         return left->getHeight() > right->getHeight() ? left->getHeight() : right->getHeight();
@@ -169,13 +170,13 @@ public:
     void insert (T data, Node<T>* current){
         //what about failure
         compKey compare;
-        if (current == nullptr){
+        if (current == NULL){
             Node<T>* new_node = new Node<T>(data);
             this->setRoot(new_node);
         }
         else {
             if (compare(data, current->getData()) < 0){
-                if (current->getLeft() == nullptr){
+                if (current->getLeft() == NULL){
                     Node<T>* new_node = new Node<T>(data);
                     current->setLeft(new_node);
                     new_node->setFather(current);
@@ -188,7 +189,7 @@ public:
             }
             else {
                 if (compare(data, current->getData()) > 0){
-                    if (current->getRight() == nullptr){
+                    if (current->getRight() == NULL){
                         Node<T>* new_node = new Node<T>(data);
                         current->setRight(new_node);
                         new_node->setFather(current);
@@ -322,6 +323,38 @@ public:
             }
         }
     }
+
+    int returnBackInOrder(Node<T> *node, T* arr, int i) {
+        if (node == NULL) {
+            return i;
+        }
+        if (node->getRight() != NULL) {
+            i = returnBackInOrder(node->getRight(), arr, i);
+        }
+        arr[i] = node->getData();
+        cout<<arr[i]<<" , ";
+        i++;
+        if (node->getLeft() != NULL) {
+            i = returnBackInOrder(node->getLeft(), arr, i);
+        }
+        return i;
+    }
+
+    void removeTree(Node<T>* current) {
+        // Removes all the nodes under a given node
+        //Delete del;
+        if (!current) {
+            return;
+        }
+        removeTree(current->getLeft());
+        removeTree(current->getRight());
+        //delete (current->getData());
+        delete current;
+
+    }
+        ~AvlTree(){
+            removeTree(this->getRoot());
+        }
 };
 
 

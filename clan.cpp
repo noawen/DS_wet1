@@ -9,14 +9,14 @@ Clan::Clan() {
     this->best_player_challenges = 0;
     this->best_player_challenges = 0;
     this->num_of_players = 0;
-    this->players_tree = new AvlTree<Player, isBigger_byCoins_byId>();
+    this->players_tree = new AvlTree<Player, isBigger_byCoins_byID>();
 }
 Clan::Clan(int id){
     this->id = id;
     this->best_player_challenges = 0;
     this->best_player_challenges = 0;
     this->num_of_players = 0;
-    this->players_tree = new AvlTree<Player, isBigger_byCoins_byId>();
+    this->players_tree = new AvlTree<Player, isBigger_byCoins_byID>();
 }
 
 int Clan::getId() {
@@ -54,7 +54,7 @@ void Clan::setBestPlayerChallenges(int challenges){
 void Clan::setNumOfPlayers() {
     if (!this)
         return;
-    this->num_of_players += 1;
+    this->num_of_players ++;
 }
 
 int Clan::getNumOfPlayers() {
@@ -64,8 +64,18 @@ int Clan::getNumOfPlayers() {
     return this->num_of_players;
 }
 
-AvlTree<Player,isBigger_byCoins_byId>*Clan ::getPalyersTree(){
+AvlTree<Player,isBigger_byCoins_byID>* Clan ::getPalyersTree(){
         if (!this)
             return NULL;
         return this->players_tree;
     }
+
+Clan& Clan::operator=(const Clan& clan){
+
+    this->id = clan.id;
+    this->best_player_id = clan.best_player_id;
+    this->best_player_challenges = clan.best_player_challenges;
+    this->num_of_players = clan.num_of_players;
+    this->players_tree = clan.players_tree;
+    return *this;
+}

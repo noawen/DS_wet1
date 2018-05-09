@@ -16,7 +16,7 @@ class Clan {
     int id;
     int best_player_id, best_player_challenges;
     int num_of_players;
-    AvlTree<Player,isBigger_byCoins_byId> *players_tree;
+    AvlTree<Player,isBigger_byCoins_byID> *players_tree;
 
 public:
     Clan();
@@ -39,7 +39,9 @@ public:
 
     void setBestPlayerChallenges(int challenges);
 
-    AvlTree<Player,isBigger_byCoins_byId>* getPalyersTree();
+    AvlTree <Player,isBigger_byCoins_byID>* getPalyersTree();
+
+    Clan&operator=(const Clan& clan);
 
 };
 
@@ -56,6 +58,8 @@ public:
         return 0;
     }
 };
+
+
 
 
 #endif //DSWET1_CLAN_H

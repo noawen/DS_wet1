@@ -18,8 +18,9 @@ class INVALID_INPUT_OASIS:       public OasisExceptions{};
 class Oasis {
     int best_player_id;
     int best_player_challenges;
+    int tot_num_of_players;
     AvlTree<Player, isBigger_byId_player> all_players_by_id;
-    AvlTree<Player, isBigger_byCoins> all_players_by_coins;
+    AvlTree<Player, isBigger_byCoins_byID> all_players_by_coins;
     AvlTree<Clan, isBigger_byId_clan> all_clans;
 
 public:
@@ -38,9 +39,13 @@ public:
 
     void getScoreboard(int clanID, int **players, int *numOfPlayers);
 
+    void getScoreAux (AvlTree<Player,isBigger_byCoins_byID>*, int **players, int *numOfPlayers, int size);
+
     void uniteClans(int clanID1, int clanID2);
 
-  //  ~Oasis();
+    int checkAccess(int playerID);
+
+    ~Oasis();
 
 };
 

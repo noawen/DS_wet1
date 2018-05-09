@@ -37,11 +37,13 @@ public:
 
     void setCoins(int coins);
 
-    void plusChallenge();
+    void plusChallange();
 
     void setClan (Clan *clan);
 
      Clan* getClan() ;
+
+    Player&operator=(const Player& player);
 
     friend std::ostream& operator << (std::ostream& os,  Player& player);
 
@@ -88,7 +90,7 @@ public:
     }
 };
 
-class isBigger_byCoins_byId {
+class isBigger_byCoins_byID {
 public:
     int operator()(Player &a, Player &b) {
         if (a.getCoins() < b.getCoins()) {

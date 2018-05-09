@@ -39,13 +39,13 @@ int Player::getChallenges() {
 void Player::setCoins(int new_coins) {
     if (!this)
         return;
-    this->coins += new_coins;
+    this->coins = new_coins;
 }
 
-void Player::plusChallenge() {
+void Player::plusChallange() {
     if (!this)
         return;
-    this->num_of_challenges += 1;
+    this->num_of_challenges ++;
 }
 
 void Player::setClan(Clan *clan) {
@@ -64,6 +64,15 @@ Clan* Player::getClan() {
 {
     os << "(" <<"id:"<<player.getId()<<" , " << "coins:"<<player.getCoins()<<")" << endl;
     return os ;
+}
+
+Player& Player::operator=(const Player& player){
+
+    this->id = player.id;
+    this->coins = player.coins;
+    this->num_of_challenges = player.num_of_challenges;
+    this->player_clan = player.player_clan;
+    return *this;
 }
 
 
