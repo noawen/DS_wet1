@@ -43,6 +43,8 @@ public:
 
     Clan&operator=(const Clan& clan);
 
+    bool operator== (Clan& clan);
+
 };
 
 

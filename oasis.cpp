@@ -106,51 +106,53 @@ void Oasis::completeChallange(int playerID, int coins) {
     if ((coins <= 0) || (playerID <= 0)) {
         throw INVALID_INPUT_OASIS();
     }
-    Player to_find = Player(playerID,0);
-    int old_coins = this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getCoins();
-    int new_coins = old_coins + coins;
-   // int relevant_clan = this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getId();
-
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).setCoins(new_coins);
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).plusChallange();
-
-    int curr_num_chgs = this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getChallenges();
-
-    if (this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getChallenges() > best_player_challenges) {
-        best_player_challenges = this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getChallenges();
-        best_player_id = playerID;
+    Player to_find = Player (playerID,0);
+   // Clan clan_to_find = Clan();
+    if(!this->all_players_by_id.contain(to_find)){
+        throw FAILURE_OASIS();
     }
-    if (this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getChallenges() == best_player_challenges){
-        if (playerID < best_player_id){
-            best_player_challenges = this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getChallenges();
+
+    //update player's trees
+    to_find = this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot());
+    this->all_players_by_coins.remove(to_find);
+    if (to_find.getClan() != NULL) {
+        to_find.getClan()->getPalyersTree()->remove(to_find);
+    }
+    to_find.setCoins(to_find.getCoins()+coins);
+    to_find.plusChallange();
+    this->all_players_by_coins.insert(to_find);
+    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).setCoins(to_find.getCoins()+coins);
+   // this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).plusChallange();
+
+    if (best_player_challenges <= to_find.getChallenges()){
+        if (best_player_challenges < to_find.getChallenges()){
+            best_player_challenges = to_find.getChallenges();
             best_player_id = playerID;
         }
-    }
-
-    if (curr_num_chgs > this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getBestPlayerChallenges()){
-        this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->setBestPlayerChallenges(curr_num_chgs);
-        this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->setBestPlayer(playerID);
-    }
-
-    if (curr_num_chgs == this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getBestPlayerChallenges()) {
-        if (playerID < this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getClan()->getBestPlayerId()) {
-            this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getClan()->setBestPlayerChallenges(curr_num_chgs);
-            this->all_players_by_id.find(to_find, this->all_players_by_id.getRoot()).getClan()->setBestPlayer(playerID);
+        else{
+            if (playerID < best_player_id){
+                best_player_challenges = to_find.getChallenges();
+                best_player_id = playerID;
+            }
         }
     }
+    if (to_find.getClan() != NULL) {
+       if( to_find.getClan()->getBestPlayerChallenges() <= to_find.getChallenges()){
+           if (to_find.getClan()->getBestPlayerChallenges() < to_find.getChallenges()) {
+               to_find.getClan()->setBestPlayerChallenges(to_find.getChallenges());
+               to_find.getClan()->setBestPlayer(playerID);
+           }
+           else {
+               if (to_find.getClan()->getBestPlayerId() > playerID  ){
+                   to_find.getClan()->setBestPlayer(playerID);
+                   to_find.getClan()->setBestPlayerChallenges(to_find.getChallenges());
+               }
+           }
+       }
 
 
-    to_find.setCoins(old_coins);
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->remove(to_find);
-    this->all_players_by_coins.remove(to_find);
-
-    Player p1 = Player(312274814,1);
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->getRoot()->setData(p1);
-
-    to_find.setCoins(new_coins);
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getPalyersTree()->insert(to_find);
-    this->all_players_by_coins.insert(to_find);
-
+    to_find.getClan()->getPalyersTree()->insert(to_find);
+}
 
 }
 
@@ -169,7 +171,9 @@ void Oasis::getBestPlayer(int clanID, int *playerID) {
         return;
     }
     Clan to_find = Clan (clanID);
-
+    if(!this->all_clans.contain(to_find)){
+        throw FAILURE_OASIS();
+    }
     if (this->all_clans.find(clanID,this->all_clans.getRoot()).getNumOfPlayers() > 0){
         *playerID = this->all_clans.find(to_find,this->all_clans.getRoot()).getBestPlayerId();
     }

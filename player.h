@@ -47,6 +47,8 @@ public:
 
     friend std::ostream& operator << (std::ostream& os,  Player& player);
 
+    bool operator== (Player& player);
+
 };
 
 

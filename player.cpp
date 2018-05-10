@@ -43,7 +43,7 @@ void Player::setCoins(int new_coins) {
 void Player::plusChallange() {
     if (!this)
         return;
-    this->num_of_challenges ++;
+    this->num_of_challenges = this->num_of_challenges+1;
 }
 
 void Player::setClan(Clan *clan) {
@@ -71,6 +71,10 @@ Player& Player::operator=(const Player& player){
     this->num_of_challenges = player.num_of_challenges;
     this->player_clan = player.player_clan;
     return *this;
+}
+
+bool Player::operator== (Player& player){
+    return (this->id == player.id);
 }
 
 

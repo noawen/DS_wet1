@@ -172,7 +172,7 @@ public:
 
 
     T &find(T data, Node<T> *current) {
-        if (current == nullptr) {
+        if (!current) {
             throw FAILURE_TREE();
         } else {
             compKey compare;
@@ -192,6 +192,7 @@ public:
     }
 
     bool contain(T data) {
+
         try {
             (this->find(data, this->getRoot()));
         }
@@ -200,6 +201,7 @@ public:
         }
         return true;
     }
+
 
     int max(Node<T> *left, Node<T> *right) {
         if (left == nullptr && right == nullptr) {
@@ -393,6 +395,12 @@ public:
                 printBackInOrder(node->getLeft());
             }
         }
+    }
+
+    int size(Node<T> *node) {
+        if (node == NULL)
+            return 0;
+        else return 1 + size(node->getLeft()) + size(node->getRight());
     }
 };
 

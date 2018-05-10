@@ -79,3 +79,7 @@ Clan& Clan::operator=(const Clan& clan){
     this->players_tree = clan.players_tree;
     return *this;
 }
+
+bool Clan::operator== (Clan& clan){
+    return (this->id == clan.id);
+}
