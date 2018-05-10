@@ -290,7 +290,7 @@ void checkCompleteChallange(void* oasis){
 
      std::cout<<"Passed score board test ^_^"<<std::endl;
  }
- */
+
 /*
 void checkUniteClans(void* oasis,int size, int* score_board, int the_challenger){
     assert(uniteClans(oasis,4,5)==SUCCESS);
@@ -377,7 +377,7 @@ int main() {
       checkJoinClan(oasis);
       checkCompleteChallange(oasis);
      checkGetBestPlayer(oasis,the_challenger);
-    // checkGetScoreboardFirst(oasis,size,score_board);
+     //checkGetScoreboardFirst(oasis,size,score_board);
     //checkUniteClans(oasis,size,score_board,the_challenger);
 //    quit(&oasis);
     // assert(oasis==NULL);
