@@ -45,6 +45,8 @@ public:
 
     int checkAccess(int playerID);
 
+    void mergePlayers(Player *a, int na, Player *b, int nb, Player *c);
+
     ~Oasis();
 
 };

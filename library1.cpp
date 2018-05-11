@@ -134,3 +134,28 @@ StatusType getScoreboard(void *DS, int clanID, int** players, int* numOfPlayers)
 
     return SUCCESS;
 }
+
+StatusType uniteClans(void *DS, int clan1, int clan2){
+    if (DS == NULL){
+        return INVALID_INPUT;
+    }
+    try{
+        ((Oasis*)DS)->uniteClans(clan1,clan2);
+    }
+    catch(INVALID_INPUT_OASIS&){
+        return INVALID_INPUT;
+    }
+    catch (FAILURE_OASIS&){
+        return FAILURE;
+    }
+    catch (std::bad_alloc&){
+        return ALLOCATION_ERROR;
+    }
+
+    return SUCCESS;
+}
+
+    void quit(void** DS){
+        delete ((Oasis*)*DS);
+        *DS = NULL;
+    }

@@ -57,6 +57,12 @@ void Clan::setNumOfPlayers() {
     this->num_of_players ++;
 }
 
+void Clan::setNumOfPlayers(int num){
+    if (!this)
+        return;
+    this->num_of_players = num;
+}
+
 int Clan::getNumOfPlayers() {
     if (!this){
         return 0;
@@ -69,6 +75,14 @@ AvlTree<Player,isBigger_byCoins_byID>* Clan ::getPalyersTree(){
             return NULL;
         return this->players_tree;
     }
+
+
+void Clan::setPlayersTree(AvlTree<Player, isBigger_byCoins_byID> *tree) {
+    if (!this)
+        return;
+    this->players_tree = tree;
+}
+
 
 Clan& Clan::operator=(const Clan& clan){
 

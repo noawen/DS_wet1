@@ -35,15 +35,21 @@ public:
 
     void setNumOfPlayers();
 
+    void setNumOfPlayers(int num);
+
     void setBestPlayer(int id);
 
     void setBestPlayerChallenges(int challenges);
+
+    void setPlayersTree (AvlTree <Player,isBigger_byCoins_byID>* tree);
 
     AvlTree <Player,isBigger_byCoins_byID>* getPalyersTree();
 
     Clan&operator=(const Clan& clan);
 
     bool operator== (Clan& clan);
+
+
 
 };
 

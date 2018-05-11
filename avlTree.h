@@ -402,6 +402,51 @@ public:
             return 0;
         else return 1 + size(node->getLeft()) + size(node->getRight());
     }
+
+
+    void merge(T* a, int na, T* b, int nb, T* c) {
+        compKey max;
+        int ia, ib, ic;
+        for (ia = ib = ic = 0; (ia < na) && (ib < nb); ic++) {
+            if (a[ia] != NULL && b[ib] != NULL && max(a[ia], b[ib]) < 0) {
+                c[ic] = a[ia];
+                ia++;
+            } else {
+                c[ic] = b[ib];
+                ib++;
+            }
+        }
+        for (; ia < na; ia++, ic++)
+            c[ic] = a[ia];
+        for (; ib < nb; ib++, ic++)
+            c[ic] = b[ib];
+    }
+
+    void printTreeToArray (Node<T>* current, T* arr, int i){
+        if (current != NULL) {
+            if (current->getLeft() != NULL) {
+                printTreeToArray(current->getLeft(), arr--, i);
+            }
+            *arr = current->getData();
+            if (current->getRight() != NULL) {
+                printTreeToArray(current->getRight(), arr--, i);
+            }
+        }
+    }
+
+    void destroyTree (Node<T>* current){
+        if (current == nullptr){
+            return;
+        }
+        if (current->getLeft() != nullptr){
+            destroyTree(current->getLeft());
+
+        }
+        if (current->getLeft() != nullptr){
+            destroyTree(current->getLeft());
+        }
+        delete (current);
+    }
 };
 
 
