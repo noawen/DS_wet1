@@ -1,4 +1,4 @@
-
+/*
 #include <iostream>
 #include "avlTree.h"
 #include "clan.h"
@@ -19,7 +19,7 @@ using std::endl;
 void test_insert() {
 
     //Oasis oasis = Oasis();
-/*
+
     AvlTree<Player, isBigger_byCoins_byID> player_tree = AvlTree<Player, isBigger_byCoins_byID>();
     Player p1 = Player(1,45);
     Player p2 = Player(2,45);
@@ -28,7 +28,7 @@ void test_insert() {
     player_tree.insert(p2);
     player_tree.insert(p3);
     player_tree.remove(p2);
-    */
+
     void *oasis = init();
     addPlayer(oasis,31,1);
     addPlayer(oasis,32,1);
@@ -68,10 +68,10 @@ int main() {
     return 0;
 }
 
+*/
 
 
 
-/*
 #include <iostream>
 #include "library1.h"
 #include <cassert>
@@ -125,10 +125,10 @@ void checkBadInputs(void* oasis, int the_challenger, int size, int* score_board)
      assert(uniteClans(oasis,1,-5)==INVALID_INPUT);
      assert(uniteClans(NULL,2,1)==INVALID_INPUT);
      //for quit
-   //  void** tmp=NULL;
-   //  void* temp=NULL;
- //    quit(tmp);
-   //  quit(&temp);
+     void** tmp=NULL;
+     void* temp=NULL;
+     quit(tmp);
+     quit(&temp);
 
      std::cout<<"Passed bad input cases ;)"<<std::endl;
  }
@@ -142,7 +142,7 @@ void checkBadInputs(void* oasis, int the_challenger, int size, int* score_board)
 #include <stdio.h>
 #include <stdlib.h>
 #define nullptr 0
-
+*/
  void checkAddPlayer(void* oasis,int the_challenger,int size,int* score_board){
      for(int i=0;i<50;i++){
          if(!i)
@@ -320,7 +320,7 @@ void checkCompleteChallange(void* oasis){
 
  }
 
-
+/*
 void checkUniteClans(void* oasis,int size, int* score_board, int the_challenger){
     assert(uniteClans(oasis,4,5)==SUCCESS);
     assert(getScoreboard(oasis,5,&score_board,&size)==FAILURE);
@@ -336,8 +336,8 @@ void checkUniteClans(void* oasis,int size, int* score_board, int the_challenger)
     free(score_board);
     assert(getBestPlayer(oasis,4,&the_challenger)==SUCCESS);
     assert(the_challenger==36);
-    */
-/*
+
+
     assert(uniteClans(oasis,2,1)==SUCCESS);
     assert(getScoreboard(oasis,2,&score_board,&size)==FAILURE);
     assert(getScoreboard(oasis,1,&score_board,&size)==SUCCESS);
@@ -394,7 +394,7 @@ void checkUniteClans(void* oasis,int size, int* score_board, int the_challenger)
 */
 
 
-/*
+
 int main() {
     void *oasis = init();
     if (oasis == NULL) {
@@ -408,13 +408,12 @@ int main() {
       checkCompleteChallange(oasis);
      checkGetBestPlayer(oasis,the_challenger);
      checkGetScoreboardFirst(oasis,size,score_board);
-    checkUniteClans(oasis,size,score_board,the_challenger);
-//    quit(&oasis);
-    // assert(oasis==NULL);
-    // std::cout<<"all good, take a penguin:"<<std::endl;
+   // checkUniteClans(oasis,size,score_board,the_challenger);
+    quit(&oasis);
+     assert(oasis==NULL);
+     std::cout<<"all good, take a penguin:"<<std::endl;
     //  printPenguin('@');
     return 0;
 
 
 }
-*/

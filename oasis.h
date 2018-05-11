@@ -43,9 +43,10 @@ public:
 
     void uniteClans(int clanID1, int clanID2);
 
-    int checkAccess(int playerID);
 
     void mergePlayers(Player *a, int na, Player *b, int nb, Player *c);
+
+    void quit();
 
     ~Oasis();
 

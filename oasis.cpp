@@ -290,23 +290,17 @@ void Oasis::mergePlayers(Player *a, int na, Player *b, int nb, Player *c){
         c[ic] = b[ib];
 }
 
-
-int Oasis::checkAccess (int id){
-    Player to_find = Player (id , 0);
-   // this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot());
-   // Player found = this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot());
-    int check = this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan()->getNumOfPlayers();
-    //Clan *found_clan = this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).getClan();
-    //int check = found_clan->getNumOfPlayers();
-   // int check = found.getClan()->getNumOfPlayers();
-    return check;
+void Oasis::quit(){
+    //this->all_players_by_coins.destroyTree(this->all_players_by_coins.getRoot());
+   // this->all_players_by_id.destroyTree(this->all_players_by_id.getRoot());
+  //  delete &this->all_players_by_coins;
+   // delete &this->all_players_by_id;
+    return;
 }
 
+
 Oasis::~Oasis() {
-
-    //delete &this->trainers;
-    //delete &this->all_glads_by_level;
-    ////  this->all_glads_by_level = NULL;
-    //  delete &this->all_glads_by_id;
-
+    delete &this->all_clans;
+    delete &this->all_players_by_id;
+    delete &this->all_players_by_coins;
 }

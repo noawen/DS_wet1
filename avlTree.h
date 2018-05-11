@@ -434,18 +434,23 @@ public:
         }
     }
 
-    void destroyTree (Node<T>* current){
+    Node<T>* destroyTree (Node<T>* current){
         if (current == nullptr){
-            return;
+            return nullptr;
         }
         if (current->getLeft() != nullptr){
-            destroyTree(current->getLeft());
+            current->setLeft(destroyTree(current->getLeft()));
 
         }
         if (current->getLeft() != nullptr){
-            destroyTree(current->getLeft());
+            current->setRight(destroyTree(current->getRight()));
         }
         delete (current);
+        return nullptr;
+    }
+
+    ~AvlTree(){
+        destroyTree(this->getRoot());
     }
 };
 
