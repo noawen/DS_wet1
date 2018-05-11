@@ -18,21 +18,42 @@ using std::endl;
 
 void test_insert() {
 
-//    Oasis oasis = Oasis();
+    //Oasis oasis = Oasis();
 
-   // AvlTree<Player, isBigger_byCoins_byID> player_avl_coins = AvlTree<Player, isBigger_byCoins_byID>();
+    AvlTree<Player, isBigger_byCoins_byID> player_tree = AvlTree<Player, isBigger_byCoins_byID>();
+    Player p1 = Player(1,45);
+    Player p2 = Player(2,45);
+    Player p3 = Player(3,45);
+    player_tree.insert(p1);
+    player_tree.insert(p2);
+    player_tree.insert(p3);
+    player_tree.remove(p2);
+
+
     void *oasis = init();
     addPlayer(oasis,31,1);
-    addClan(oasis,1);
-    addClan(oasis,2);
-    joinClan(oasis,31,1);
-    joinClan(oasis,31,2);
+    addPlayer(oasis,32,1);
+
+    addClan(oasis,312);
+   // addClan(oasis,2);
+
+    joinClan(oasis,31,312);
+    joinClan(oasis,32,312);
+
     completeChallange(oasis,31,1);
+    completeChallange(oasis,31,1);
+
+
+
+    int result;
+    if (getBestPlayer(oasis,312,&result));
+    assert(result == 31);
 
     //oasis.addPlayer(31,2);
   //  oasis.addClan(2000);
   //  oasis.addPlayer(31,2000);
    // oasis.completeChallange(31,5);
+
 }
 
 int main() {
@@ -40,11 +61,11 @@ int main() {
    // test_oasis();
     return 0;
 }
+
+
 */
 
 
-
-/*
 #include <iostream>
 #include "library1.h"
 #include <cassert>
@@ -53,9 +74,9 @@ int main() {
 #include <stdlib.h>
 
 #define nullptr 0
-*/
 
-/*
+
+
 void checkBadInputs(void* oasis, int the_challenger, int size, int* score_board) {
     //for add player
     assert(addPlayer(oasis, 1, -1) == INVALID_INPUT);
@@ -106,7 +127,8 @@ void checkBadInputs(void* oasis, int the_challenger, int size, int* score_board)
      std::cout<<"Passed bad input cases ;)"<<std::endl;
  }
 
-*/
+
+
 #include <iostream>
 #include "library1.h"
 #include <cassert>
@@ -197,26 +219,26 @@ void checkCompleteChallange(void* oasis){
 
 
  void checkGetBestPlayer(void* oasis,int the_challenger){
-  //   assert(getBestPlayer(oasis,1,&the_challenger)==SUCCESS);
-    // assert(the_challenger==6);
+     assert(getBestPlayer(oasis,1,&the_challenger)==SUCCESS);
+     assert(the_challenger==6);
 
      assert(getBestPlayer(oasis,2,&the_challenger)==SUCCESS);
      assert(the_challenger==12);
 
-   //  assert(getBestPlayer(oasis,3,&the_challenger)==SUCCESS);
-     //assert(the_challenger==24);
+     assert(getBestPlayer(oasis,3,&the_challenger)==SUCCESS);
+     assert(the_challenger==24);
 
      assert(getBestPlayer(oasis,4,&the_challenger)==SUCCESS);
      assert(the_challenger==36);
 
-    // assert(getBestPlayer(oasis,5,&the_challenger)==SUCCESS);
-    // assert(the_challenger==33);
+     assert(getBestPlayer(oasis,5,&the_challenger)==SUCCESS);
+     assert(the_challenger==33);
 
      assert(getBestPlayer(oasis,100,&the_challenger)==FAILURE);
 
      std::cout<<"Passed best player test :D"<<std::endl;
  }
-/*
+
  void checkGetScoreboardFirst(void* oasis,int size, int* score_board){
      assert(getScoreboard(oasis,19,&score_board,&size)==SUCCESS);
      assert(size==0);
@@ -289,6 +311,7 @@ void checkCompleteChallange(void* oasis){
      assert(getScoreboard(oasis,100,&score_board,&size)==FAILURE);
 
      std::cout<<"Passed score board test ^_^"<<std::endl;
+
  }
 
 /*
@@ -377,7 +400,7 @@ int main() {
       checkJoinClan(oasis);
       checkCompleteChallange(oasis);
      checkGetBestPlayer(oasis,the_challenger);
-     //checkGetScoreboardFirst(oasis,size,score_board);
+     checkGetScoreboardFirst(oasis,size,score_board);
     //checkUniteClans(oasis,size,score_board,the_challenger);
 //    quit(&oasis);
     // assert(oasis==NULL);

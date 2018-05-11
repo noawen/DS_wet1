@@ -6,15 +6,15 @@
 
 Clan::Clan() {
     this->id = 0;
-    this->best_player_challenges = 0;
-    this->best_player_challenges = 0;
+    this->best_player_id = 0;
+    this->best_player_challenges = -1;
     this->num_of_players = 0;
     this->players_tree = new AvlTree<Player, isBigger_byCoins_byID>();
 }
 Clan::Clan(int id){
     this->id = id;
-    this->best_player_challenges = 0;
-    this->best_player_challenges = 0;
+    this->best_player_id = 0;
+    this->best_player_challenges = -1;
     this->num_of_players = 0;
     this->players_tree = new AvlTree<Player, isBigger_byCoins_byID>();
 }

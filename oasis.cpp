@@ -121,8 +121,8 @@ void Oasis::completeChallange(int playerID, int coins) {
     to_find.setCoins(to_find.getCoins()+coins);
     to_find.plusChallange();
     this->all_players_by_coins.insert(to_find);
-    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).setCoins(to_find.getCoins()+coins);
-   // this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).plusChallange();
+    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).setCoins(to_find.getCoins());
+    this->all_players_by_id.find(to_find,this->all_players_by_id.getRoot()).plusChallange();
 
     if (best_player_challenges <= to_find.getChallenges()){
         if (best_player_challenges < to_find.getChallenges()){
@@ -152,6 +152,7 @@ void Oasis::completeChallange(int playerID, int coins) {
 
 
     to_find.getClan()->getPalyersTree()->insert(to_find);
+
 }
 
 }
@@ -185,19 +186,21 @@ void Oasis::getBestPlayer(int clanID, int *playerID) {
 
 void Oasis::getScoreboard(int clanID, int **players, int *numOfPlayers) {
     //bool trainerFound = false;
+    Clan to_find = Clan(clanID);
     if (clanID == 0 || players == NULL || numOfPlayers == NULL) {
         throw INVALID_INPUT_OASIS();
+    }
+    if (clanID > 0 && !this->all_clans.contain(to_find)) {
+        throw FAILURE_OASIS();
     }
     if (clanID < 0) {
         getScoreAux(&this->all_players_by_coins, players, numOfPlayers, this->tot_num_of_players);
     } else {
-        Clan to_find = Clan(clanID);
+
         int num = this->all_clans.find(to_find, this->all_clans.getRoot()).getNumOfPlayers();
         getScoreAux((this->all_clans.find(to_find, this->all_clans.getRoot()).getPalyersTree()), players, numOfPlayers,
                     num);
-        if (clanID > 0 && !this->all_clans.contain(to_find)) {
-            throw FAILURE_OASIS();
-        }
+
     }
 }
 
