@@ -422,14 +422,15 @@ public:
             c[ic] = b[ib];
     }
 
-    void printTreeToArray (Node<T>* current, T* arr, int i){
+    void printTreeToArray (Node<T>* current, T* arr, int *i){
         if (current != NULL) {
             if (current->getLeft() != NULL) {
-                printTreeToArray(current->getLeft(), arr--, i);
+                printTreeToArray(current->getLeft(), arr, i);
             }
-            *arr = current->getData();
+            arr[*i] = current->getData();
+            ++(*i);
             if (current->getRight() != NULL) {
-                printTreeToArray(current->getRight(), arr--, i);
+                printTreeToArray(current->getRight(), arr, i);
             }
         }
     }
@@ -451,6 +452,7 @@ public:
 
     ~AvlTree(){
         destroyTree(this->getRoot());
+        root = NULL;
     }
 };
 

@@ -49,6 +49,8 @@ public:
 
     bool operator== (Clan& clan);
 
+    ~Clan() ;
+
 
 
 };

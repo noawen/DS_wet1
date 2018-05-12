@@ -20,11 +20,12 @@ Oasis::Oasis(){
 }
 
 void Oasis::addPlayer(int playerID, int initialCoins) {
-    Player to_find = Player(playerID,0);
+
     if (playerID <= 0 || initialCoins < 0) {
         throw INVALID_INPUT_OASIS();
     }
     // try {
+    Player to_find = Player(playerID,0);
     Player new_player = Player(playerID, initialCoins);
     //}
     // catch (std::bad_alloc&&){
@@ -204,10 +205,85 @@ void Oasis::getScoreboard(int clanID, int **players, int *numOfPlayers) {
     }
 }
 
+void Oasis:: getScoreAux(AvlTree<Player,isBigger_byCoins_byID> *tree, int **players, int *numOfPlayers, int size){
+    *numOfPlayers = size;
+    if(*numOfPlayers == 0){
+        *players = NULL;
+    } else {
+        Player *players_tot = (Player*)malloc((*numOfPlayers) * sizeof(Player));
+        tree->returnBackInOrder(tree->getRoot(),players_tot,0);
+        int * player_temp = (int *) malloc((*numOfPlayers) * sizeof(int));
+        for(int i = 0 ; i < *numOfPlayers ; i++){
+            player_temp[i] = players_tot[i].getId();
+        }
+        *players = player_temp;
+        free(players_tot);
+    }
+}
+
 static int max (int a, int b){
     return a > b ? a : b;
 }
 
+void Oasis::uniteClans(int clanID1, int clanID2){
+    if (clanID1 == clanID2 || clanID1 <= 0 || clanID2 <= 0 ){
+        throw INVALID_INPUT_OASIS();
+    }
+    // maybe cases of allocation error should be added
+    Clan clan1 = Clan(clanID1);
+    Clan clan2 = Clan(clanID2);
+
+    if (!this->all_clans.contain(clan1) || !(this->all_clans.contain(clan2))){
+        throw FAILURE_OASIS();
+    }
+    clan1 = this->all_clans.find(clanID1, this->all_clans.getRoot());  //finding the requested clans
+    clan2 = this->all_clans.find(clanID2, this->all_clans.getRoot());
+    Player arr1 [clan1.getNumOfPlayers()];                                  //two arrays for players
+    Player arr2 [clan2.getNumOfPlayers()];
+    int i1 = 0;
+    int i2 = 0;
+    this->all_players_by_id.printTreeToArray(clan1.getPalyersTree()->getRoot(), arr1, &i1);//put the players into array
+    this->all_players_by_id.printTreeToArray(clan2.getPalyersTree()->getRoot(), arr2, &i2);
+    Player merged_arr [clan1.getNumOfPlayers() + clan2.getNumOfPlayers()];                                      // merged array of two clans players
+    this->mergePlayers(arr1,clan1.getNumOfPlayers(),arr2, clan2.getNumOfPlayers(),merged_arr);
+
+    int newClanId = clan1.getNumOfPlayers() > clan2.getNumOfPlayers() ? clan1.getId() : clan2.getId(); //finding the requested id
+    if (clan1.getNumOfPlayers() == clan2.getNumOfPlayers()){
+        newClanId = clan1.getId() < clan2.getId() ? clan1.getId() : clan2.getId();
+    }
+    Clan newClan(newClanId);                        //making new clan and put it the clan tree
+    //newClan.setBestPlayer(max(clan1.getBestPlayerId(), clan2.getBestPlayerId())); //TO CHECK IF ALL CLAN DID NOT COMPLETE CHALLENGES
+    //newClan.setBestPlayerChallenges(max(clan1.getBestPlayerChallenges(), clan2.getBestPlayerChallenges()));
+
+    for (int i = 0; i < clan1.getNumOfPlayers() + clan2.getNumOfPlayers(); i++){
+        if (merged_arr[i].getChallenges() == 0){
+            this->all_players_by_id.find(merged_arr[i], this->all_players_by_id.getRoot()).setClan(NULL);
+            this->all_players_by_coins.find(merged_arr[i], this->all_players_by_coins.getRoot()).setClan(NULL);
+        } else{
+            this->all_players_by_id.find(merged_arr[i], this->all_players_by_id.getRoot()).setClan(&newClan);
+            this->all_players_by_coins.find(merged_arr[i], this->all_players_by_coins.getRoot()).setClan(&newClan);
+            merged_arr[i].setClan(&newClan);
+            newClan.setNumOfPlayers();
+            if (merged_arr[i].getChallenges() >= newClan.getBestPlayerChallenges()){
+                if (merged_arr[i].getChallenges() == newClan.getBestPlayerChallenges()){
+                    if(merged_arr[i].getId() < newClan.getBestPlayerId()){
+                        newClan.setBestPlayerChallenges(merged_arr[i].getChallenges());
+                        newClan.setBestPlayer(merged_arr[i].getId());
+                    }
+                } else{
+                    newClan.setBestPlayerChallenges(merged_arr[i].getChallenges());
+                    newClan.setBestPlayer(merged_arr[i].getId());
+                }
+            }
+            newClan.getPalyersTree()->insert(merged_arr[i]);
+        }
+    }//VALGRIND BECAUSE OF NOT DESTROYING CLANS' TREES
+    this->all_clans.remove(clan1); //remove first clan from the clans tree
+    this->all_clans.remove(clan2); //remove second clan from the clans tree
+    this->all_clans.insert(newClan);
+}
+
+/*
 void Oasis::uniteClans(int clanID1, int clanID2){
     if (clanID1 == clanID2 || clanID1 <= 0 || clanID2 <= 0 ){
         throw INVALID_INPUT_OASIS();
@@ -253,23 +329,9 @@ void Oasis::uniteClans(int clanID1, int clanID2){
     newClan.setPlayersTree(mergedClan);
     this->all_clans.insert(newClan);
 }
+*/
 
 
-void Oasis:: getScoreAux(AvlTree<Player,isBigger_byCoins_byID> *tree, int **players, int *numOfPlayers, int size){
-    *numOfPlayers = size;
-    if(*numOfPlayers == 0){
-        *players = NULL;
-    } else {
-        Player *players_tot = (Player*)malloc((*numOfPlayers) * sizeof(Player));
-        tree->returnBackInOrder(tree->getRoot(),players_tot,0);
-        int * player_temp = (int *) malloc((*numOfPlayers) * sizeof(int));
-        for(int i = 0 ; i < *numOfPlayers ; i++){
-            player_temp[i] = players_tot[i].getId();
-        }
-        *players = player_temp;
-        free(players_tot);
-    }
-}
 
 void Oasis::mergePlayers(Player *a, int na, Player *b, int nb, Player *c){
     int ia, ib , ic;
@@ -291,16 +353,18 @@ void Oasis::mergePlayers(Player *a, int na, Player *b, int nb, Player *c){
 }
 
 void Oasis::quit(){
-    //this->all_players_by_coins.destroyTree(this->all_players_by_coins.getRoot());
-   // this->all_players_by_id.destroyTree(this->all_players_by_id.getRoot());
-  //  delete &this->all_players_by_coins;
-   // delete &this->all_players_by_id;
+    this->all_players_by_coins.destroyTree(this->all_players_by_coins.getRoot());
+    this->all_players_by_id.destroyTree(this->all_players_by_id.getRoot());
+    delete &this->all_players_by_coins;
+    delete &this->all_players_by_id;
     return;
 }
 
 
 Oasis::~Oasis() {
-    delete &this->all_clans;
-    delete &this->all_players_by_id;
-    delete &this->all_players_by_coins;
+    //this->all_players_by_coins.destroyTree(this->all_players_by_coins.getRoot());
+    //this->all_players_by_id.destroyTree(this->all_players_by_id.getRoot());
+   // delete &this->all_clans;
+   // delete &this->all_players_by_id;
+   // delete &this->all_players_by_coins;
 }

@@ -43,6 +43,7 @@ public:
 
     void uniteClans(int clanID1, int clanID2);
 
+    void makeTwoArrays (int id1, int id2, int maxID);
 
     void mergePlayers(Player *a, int na, Player *b, int nb, Player *c);
 

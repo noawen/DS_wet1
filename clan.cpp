@@ -97,3 +97,7 @@ Clan& Clan::operator=(const Clan& clan){
 bool Clan::operator== (Clan& clan){
     return (this->id == clan.id);
 }
+
+Clan::~Clan() {
+
+}
