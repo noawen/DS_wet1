@@ -48,6 +48,7 @@ public:
     Clan&operator=(const Clan& clan);
 
     bool operator== (Clan& clan);
+    Clan(const Clan &clan) ;
 
     ~Clan() ;
 

@@ -155,20 +155,14 @@ StatusType uniteClans(void *DS, int clan1, int clan2){
     return SUCCESS;
 }
 
-    void quit(void** DS){
-        if (!DS) {
-            return;
-        }
-     //   ((Oasis*)DS)->quit();
-        //Oasis* ds = (Oasis *) *DS;
-       // delete
-        //delete ((ds)->());
-        //delete ((ds)->Teams());
-        //delete ds;
-     //   delete ((Oasis*)*DS);
-      //  *DS = NULL;
-        *DS = NULL;
+void quit(void** DS){
+    if (!DS) {
+        return;
+    }
+    Oasis** ds = (Oasis **) DS;
+    delete *ds;
 
+    *DS = NULL;
     }
 
 

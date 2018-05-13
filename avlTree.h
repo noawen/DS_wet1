@@ -113,6 +113,15 @@ public:
         return this->left;
     }
 
+    Node<T>&operator=(const Node<T>& node){
+        data = node.data;
+        left = node.left;
+        right = node.right;
+        height = node.height;
+        balanceFactor = node.balanceFactor;
+        father = node.father;
+    }
+
 };
 
 template <class T, class compKey>
@@ -385,6 +394,8 @@ public:
         }
     }
 
+
+
     void printBackInOrder(Node<T> *node) {
         if (node != NULL) {
             if (node->getRight() != NULL) {
@@ -404,23 +415,6 @@ public:
     }
 
 
-    void merge(T* a, int na, T* b, int nb, T* c) {
-        compKey max;
-        int ia, ib, ic;
-        for (ia = ib = ic = 0; (ia < na) && (ib < nb); ic++) {
-            if (a[ia] != NULL && b[ib] != NULL && max(a[ia], b[ib]) < 0) {
-                c[ic] = a[ia];
-                ia++;
-            } else {
-                c[ic] = b[ib];
-                ib++;
-            }
-        }
-        for (; ia < na; ia++, ic++)
-            c[ic] = a[ia];
-        for (; ib < nb; ib++, ic++)
-            c[ic] = b[ib];
-    }
 
     void printTreeToArray (Node<T>* current, T* arr, int *i){
         if (current != NULL) {
@@ -434,7 +428,17 @@ public:
             }
         }
     }
+/*
+    AvlTree<T,compKey>&operator=(const AvlTree<T,compKey> tree){
 
+        data = node.data;
+        left = node.left;
+        right = node.right;
+        height = node.height;
+        balanceFactor = node.balanceFactor;
+        father = node.father;
+    }
+*/
     Node<T>* destroyTree (Node<T>* current){
         if (current == nullptr){
             return nullptr;
@@ -443,7 +447,7 @@ public:
             current->setLeft(destroyTree(current->getLeft()));
 
         }
-        if (current->getLeft() != nullptr){
+        if (current->getRight() != nullptr){
             current->setRight(destroyTree(current->getRight()));
         }
         delete (current);
@@ -451,13 +455,10 @@ public:
     }
 
     ~AvlTree(){
-        destroyTree(this->getRoot());
+        destroyTree(root);
         root = NULL;
     }
 };
-
-
-
 
 
 #endif //DSWET1_AVLTREE_H
