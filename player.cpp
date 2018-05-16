@@ -7,6 +7,8 @@
 Player::Player(){
     this->id = 0;
     this->coins = 0;
+    this->player_clan = NULL;
+    this->num_of_challenges = 0;
 }
 
 Player::Player(int id, int coins){
@@ -52,6 +54,12 @@ void Player::setClan(Clan *clan) {
     this->player_clan = clan;
 }
 
+void Player::setChallanges(int challanges){
+    if (!this)
+        return;
+    this->num_of_challenges = challanges;
+}
+
 Clan* Player::getClan() {
     if (!this)
         return NULL;
@@ -78,3 +86,6 @@ bool Player::operator== (Player& player){
 }
 
 
+Player::~Player() {
+    this->player_clan = NULL;
+}

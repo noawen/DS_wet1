@@ -48,7 +48,6 @@ public:
     Clan&operator=(const Clan& clan);
 
     bool operator== (Clan& clan);
-    Clan(const Clan &clan) ;
 
     ~Clan() ;
 
@@ -59,11 +58,11 @@ public:
 
 class isBigger_byId_clan {
 public:
-    int operator()(Clan& a, Clan& b) {
-        if (a.getId() < b.getId()) {
+    int operator()(Clan* a, Clan* b) {
+        if ((*a).getId() < (*b).getId()) {
             return -1;
         }
-        if (a.getId() > b.getId()) {
+        if ((*a).getId() > (*b).getId()) {
             return 1;
         }
         return 0;

@@ -2,15 +2,6 @@
 // Created by Dell on 30/04/2018.
 //
 
-
-#include<iostream>
-//#include "AVL1.h"
-using std::cout;
-using std::endl;
-
-#include "oasis.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include "clan.h"
 
 Clan::Clan() {
@@ -80,10 +71,17 @@ int Clan::getNumOfPlayers() {
 }
 
 AvlTree<Player,isBigger_byCoins_byID>* Clan ::getPalyersTree(){
-        if (!this)
-            return NULL;
-        return this->players_tree;
-    }
+    if (!this)
+        return NULL;
+    return this->players_tree;
+}
+
+
+void Clan::setPlayersTree(AvlTree<Player, isBigger_byCoins_byID> *tree) {
+    if (!this)
+        return;
+    this->players_tree = tree;
+}
 
 
 Clan& Clan::operator=(const Clan& clan){
@@ -92,17 +90,8 @@ Clan& Clan::operator=(const Clan& clan){
     this->best_player_id = clan.best_player_id;
     this->best_player_challenges = clan.best_player_challenges;
     this->num_of_players = clan.num_of_players;
-    this->players_tree = new AvlTree<Player, isBigger_byCoins_byID>();
     this->players_tree = clan.players_tree;
     return *this;
-}
-
-Clan::Clan(const Clan &clan) {
-    id = clan.id;
-    best_player_id = clan.best_player_id;
-    best_player_challenges = clan.best_player_challenges;
-    num_of_players = clan.num_of_players;
-    players_tree = new AvlTree<Player, isBigger_byCoins_byID>();
 }
 
 bool Clan::operator== (Clan& clan){
@@ -110,7 +99,7 @@ bool Clan::operator== (Clan& clan){
 }
 
 Clan::~Clan() {
-    //cout<<"clan destructor";
-   // cout<<" "<<this<<endl;
-   // delete players_tree;
+    this->players_tree = nullptr;
+//this->setBestPlayerChallenges(0);
+//this->setNumOfPlayers(0);
 }

@@ -360,9 +360,9 @@ int main() {
     checkGetBestPlayer(oasis,the_challenger);
     checkGetScoreboardFirst(oasis,size,score_board);
     checkUniteClans(oasis,size,score_board,the_challenger);
-    quit(&oasis);
-    assert(oasis==NULL);
-    std::cout<<"all good, take a penguin:"<<std::endl;
+    //quit(&oasis);
+    //assert(oasis==NULL);
+    //std::cout<<"all good, take a penguin:"<<std::endl;
    // printPenguin('@');
     return 0;
 }

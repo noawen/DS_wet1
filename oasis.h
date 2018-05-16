@@ -45,7 +45,7 @@ public:
 
     void makeTwoArrays (int id1, int id2, int maxID);
 
-    void mergePlayers(Player *a, int na, Player *b, int nb, Player *c);
+    void mergePlayers(Player **a, int na, Player **b, int nb, Player **c);
 
     void quit();
 

@@ -159,9 +159,8 @@ void quit(void** DS){
     if (!DS) {
         return;
     }
-    Oasis** ds = (Oasis **) DS;
-    delete *ds;
-
+   // Oasis* ds = (Oasis *) *DS;
+  //  delete ds;
     *DS = NULL;
     }
 

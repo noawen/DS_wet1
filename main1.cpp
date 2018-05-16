@@ -93,8 +93,13 @@ static bool isInit = false;
 int main(int argc, const char**argv) {
     char buffer[MAX_STRING_INPUT_SIZE];
 
+    FILE* file= fopen("C:\\Users\\Dell\\CLionProjects\\DS-second time\\DSwet1\\test.in","r");
+    //fopen("C:\\Users\\Dell\\CLionProjects\\splayTree\\in1.txt","r");
+    while (fgets(buffer, MAX_STRING_INPUT_SIZE, file) != NULL) {
+
+
     // Reading commands
-    while (fgets(buffer, MAX_STRING_INPUT_SIZE, stdin) != NULL) {
+   //while (fgets(buffer, MAX_STRING_INPUT_SIZE, stdin) != NULL) {
         fflush(stdout);
         if (parser(buffer) == error)
             break;

@@ -7,6 +7,7 @@
 #define nullptr 0
 #include <iostream>
 using std::cout;
+using std::endl;
 
 class TreeExceptions {
 };
@@ -18,14 +19,14 @@ class ALLOCATION_ERROR_TREE: public TreeExceptions {
 
 template<class T>
 class Node {
-    T data;
+    T* data;
     int height;
     int balanceFactor;
     Node* father;
     Node* left, *right;
 
 public:
-    Node (const T& data){
+    Node ( T* data){
         this->data = data;
         this->height = 0;
         this->balanceFactor = 0;
@@ -34,7 +35,7 @@ public:
         this->left = nullptr;
     }
 
-    void setData (const T& data){
+    void setData ( T* data){
         if (this == nullptr){
             return;
         }
@@ -77,7 +78,7 @@ public:
     }
 
 
-    T& getData (){
+    T* getData (){
         return this->data;
     }
 
@@ -113,22 +114,13 @@ public:
         return this->left;
     }
 
-    Node<T>&operator=(const Node<T>& node){
-        data = node.data;
-        left = node.left;
-        right = node.right;
-        height = node.height;
-        balanceFactor = node.balanceFactor;
-        father = node.father;
-    }
-
 };
 
 template <class T, class compKey>
 class AvlTree {
     Node<T> *root;
 
-    Node<T> *insert(T &data, Node<T> *current) {
+    Node<T> *insert(T *data, Node<T> *current) {
         compKey compare;
         if (current == nullptr) {
             try {
@@ -155,6 +147,7 @@ class AvlTree {
                 }
             }
         } else {
+          //  cout<<"1"<<endl;
             throw FAILURE_TREE();
         }
         current->setHeight(max(current->getLeft(), current->getRight()) + 1);
@@ -180,9 +173,11 @@ public:
     }
 
 
-    T &find(T data, Node<T> *current) {
+    T *find(T* data, Node<T> *current) {
         if (!current) {
-            throw FAILURE_TREE();
+        //    cout<<"2"<<endl;
+         //   throw FAILURE_TREE();
+            return nullptr;
         } else {
             compKey compare;
             if (compare(data, current->getData()) == 0) {
@@ -194,20 +189,28 @@ public:
                     if (compare(data, current->getData()) < 0) {
                         return find(data, current->getLeft());
                     }
-                    throw FAILURE_TREE();
+                    else {
+                        //  cout<<"3"<<endl;
+                        //   throw FAILURE_TREE();
+                        return nullptr;
+                    }
                 }
             }
         }
     }
 
-    bool contain(T data) {
-
-        try {
-            (this->find(data, this->getRoot()));
-        }
-        catch (TreeExceptions &) {
+    bool contain(T* data) {
+        if (!find(data, this->getRoot())) {
             return false;
+
         }
+    //    }
+    //    try {
+    //        (this->find(data, this->getRoot()));
+    //    }
+    //    catch (TreeExceptions &) {
+     //       return false;
+       // }
         return true;
     }
 
@@ -290,21 +293,22 @@ public:
     }
 
 
-    void insert(T &data) {
+    void insert(T *data) {
         root = insert(data, root);
     }
 
 
-    void remove(T &data) {
+    void remove(T *data) {
         if (!this)
             return;
         root = remove(data, root);
+      //  if (remove(data, root) == nullptr){}
     }
 
 
-    Node<T> *remove(T data, Node<T> *current) {
+    Node<T> *remove(T* data, Node<T> *current) {
         compKey compare;
-       // Node<T> *temp;
+        // Node<T> *temp;
         if (current == nullptr) {
             return current;
         }
@@ -366,7 +370,7 @@ public:
             return findMin(current->getLeft());
     }
 
-    int returnBackInOrder(Node<T> *node, T* arr, int i) {
+    int returnBackInOrder(Node<T> *node, T** arr, int i) {
         if (node == NULL) {
             return i;
         }
@@ -374,7 +378,7 @@ public:
             i = returnBackInOrder(node->getRight(), arr, i);
         }
         arr[i] = node->getData();
-    //    cout<<arr[i]<<" , ";
+        //    cout<<arr[i]<<" , ";
         i++;
         if (node->getLeft() != NULL) {
             i = returnBackInOrder(node->getLeft(), arr, i);
@@ -393,8 +397,6 @@ public:
             }
         }
     }
-
-
 
     void printBackInOrder(Node<T> *node) {
         if (node != NULL) {
@@ -415,30 +417,37 @@ public:
     }
 
 
+    void merge(T* a, int na, T* b, int nb, T* c) {
+        compKey max;
+        int ia, ib, ic;
+        for (ia = ib = ic = 0; (ia < na) && (ib < nb); ic++) {
+            if (a[ia] != NULL && b[ib] != NULL && max(a[ia], b[ib]) < 0) {
+                c[ic] = a[ia];
+                ia++;
+            } else {
+                c[ic] = b[ib];
+                ib++;
+            }
+        }
+        for (; ia < na; ia++, ic++)
+            c[ic] = a[ia];
+        for (; ib < nb; ib++, ic++)
+            c[ic] = b[ib];
+    }
 
-    void printTreeToArray (Node<T>* current, T* arr, int *i){
+    void printTreeToArray (Node<T>* current, T** arr, int *i){
         if (current != NULL) {
             if (current->getLeft() != NULL) {
                 printTreeToArray(current->getLeft(), arr, i);
             }
-            arr[*i] = current->getData();
+            arr[*i] = (current->getData());
             ++(*i);
             if (current->getRight() != NULL) {
                 printTreeToArray(current->getRight(), arr, i);
             }
         }
     }
-/*
-    AvlTree<T,compKey>&operator=(const AvlTree<T,compKey> tree){
 
-        data = node.data;
-        left = node.left;
-        right = node.right;
-        height = node.height;
-        balanceFactor = node.balanceFactor;
-        father = node.father;
-    }
-*/
     Node<T>* destroyTree (Node<T>* current){
         if (current == nullptr){
             return nullptr;
@@ -447,7 +456,7 @@ public:
             current->setLeft(destroyTree(current->getLeft()));
 
         }
-        if (current->getRight() != nullptr){
+        if (current->getLeft() != nullptr){
             current->setRight(destroyTree(current->getRight()));
         }
         delete (current);
@@ -455,10 +464,13 @@ public:
     }
 
     ~AvlTree(){
-        destroyTree(root);
+        destroyTree(this->getRoot());
         root = NULL;
     }
 };
+
+
+
 
 
 #endif //DSWET1_AVLTREE_H

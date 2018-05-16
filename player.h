@@ -39,6 +39,8 @@ public:
 
     void plusChallange();
 
+    void setChallanges(int challanges);
+
     void setClan (Clan *clan);
 
      Clan* getClan() ;
@@ -48,17 +50,18 @@ public:
     friend std::ostream& operator << (std::ostream& os,  Player& player);
 
     bool operator== (Player& player);
+    ~Player();
 
 };
 
 
 class isBigger {
 public:
-    int operator()(int a, int b) {
-        if (a < b) {
+    int operator()(int* a, int* b) {
+        if (*a < *b) {
             return -1;
         }
-        if (a > b) {
+        if (*a > *b) {
             return 1;
         }
         return 0;
@@ -68,17 +71,17 @@ public:
 
 class isBigger_byId_player {
 public:
-    int operator()(Player& a, Player& b) {
-        if (a.getId() < b.getId()) {
+    int operator()(Player* a, Player* b) {
+        if ((*a).getId() < (*b).getId()) {
             return -1;
         }
-        if (a.getId() > b.getId()) {
+        if ((*a).getId() > (*b).getId()) {
             return 1;
         }
         return 0;
     }
 };
-
+/*
 class isBigger_byCoins {
 public:
     int operator()(Player& a, Player& b) {
@@ -92,19 +95,20 @@ public:
     }
 };
 
+ */
 class isBigger_byCoins_byID {
 public:
-    int operator()(Player &a, Player &b) {
-        if (a.getCoins() < b.getCoins()) {
+    int operator()(Player *a, Player *b) {
+        if ((*a).getCoins() < (*b).getCoins()) {
             return -1;
         }
-        if (a.getCoins() > b.getCoins()) {
+        if ((*a).getCoins() > (*b).getCoins()) {
             return 1;
         }
-        if (a.getCoins() == b.getCoins()) {
-            if (a.getId() < b.getId()) {
+        if ((*a).getCoins() == (*b).getCoins()) {
+            if ((*a).getId() < (*b).getId()) {
                 return 1;
-            } else if((a.getId() > b.getId())) {
+            } else if(((*a).getId() > (*b).getId())) {
                 return -1;
             }
         }

@@ -1,21 +1,16 @@
 //
-// Created by Dell on 12/05/2018.
-//
-
-//
 //
 // Created by pinsk on 5/8/2018.
 //
 #include<iostream>
-//#include "AVL1.h"
+#include "avlTree.h"
 using std::cout;
 using std::endl;
 
 #include "oasis.h"
 #include "testMacros.h"
 #include "library1.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 
 
 
@@ -49,14 +44,12 @@ bool testAddPlayer(){
     ASSERT_TRUE(addPlayer(oasis,2,0) == FAILURE);
 
     ASSERT_TRUE(addPlayer(oasis,0,0) == INVALID_INPUT);
-
     ASSERT_TRUE(addPlayer(oasis,-1,0) == INVALID_INPUT);
 
     ASSERT_TRUE(addPlayer(oasis,4,-1) == INVALID_INPUT);
     ASSERT_TRUE(addPlayer(oasis,6,-2) == INVALID_INPUT);
 
     ASSERT_TRUE(addPlayer(NULL,6,-2) == INVALID_INPUT);
-
     delete(oasis);
     return true;
 }
